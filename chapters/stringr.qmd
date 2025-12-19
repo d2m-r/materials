@@ -1,0 +1,165 @@
+---
+title: "Strings and Character Data"
+---
+
+We introduced the concepts of strings and character vectors in  @sec-data-types-character, and we've worked with them a bit in the previous chapters.
+
+In this chapter we're going to dive a little deeper into character data and how to use the `stringr` package to manipulate and analyze strings in R.
+
+## Overview
+
+As a reminder, *character data* is the R data type for text. 
+*Characters* are the smallest units of text, like letters, numbers, and symbols.
+*Strings* are sequences of characters.
+*Character vectors* are collections of one or more strings.
+
+`d2m-R` is a character vector of length 1, containing 1 string of text: `"d2m-R"`, which is a sequence of 5 characters: `d`, `2`, `m`, `-`, and `R`.
+
+Strings and character vectors are embedded in one another. 
+`c("d2m", "-R")` is 1 character vector of length 2.
+The 2 strings it contains are of lengths 3 and 2, respectively.
+Each of those 2 strings is itself a character vector of length 1.
+
+If we broke it up into it's smallest combinatory pieces, we'd get `c("d", "2", "m", "-", "R")`, which is a character vector of length 5 (strings), each of which is a string of length 1 (characters) *and* a character vector of length one.
+At this point the combined character vector is basically the same as the original string.
+
+Recall that we create strings by surrounding a string's text in either single or double quotes, then assigning it to a variable:
+
+```r
+with_single_quotes <- 'This string uses single quotes.'
+with_double_quotes <- "This string uses double quotes."
+```
+
+You can use either single or double quotes to create strings in R.
+On your end, it's just a matter of preference, though I recommend using double quotes for consistency.
+
+### Escaping characters {#sec-escaping-characters}
+
+What happens when you need to include a single quote in a single quoted string (or double in double)?
+You can do this by *escaping* the quote character with a backslash `\`.
+We talked a little about escaping in @sec-regex when we introduced regular expressions, and escaping in a string is really the same thing.
+When R sees the backslash, it knows to treat the next character as a literal character and part of the ongoing string rather than a functional R character.
+In this case, `\'` or `\"` tells R that the quote should not do its usual job of ending the string.
+
+```r
+escaped_single_quote <- 'This string uses a single quote: \''
+escaped_double_quote <- "This string uses a double quote: \""
+```
+
+Ok, this is going to get weird for a minute so bear with me. 
+Try running the code above, then view each stored variable:
+
+```r
+escaped_single_quote  # "This string includes a single quote: '"
+escaped_double_quote  # "This string includes a double quote: \""
+```
+
+It looks like the `\` successfully escaped the single quote, but for some reason didn't escape the double quote.
+But also it didn't throw an error, it just also added the `\`.
+Why didn't it escape the double quote?
+
+Well actually, it did.
+What we're intuiting here is kind of the reverse of what R is doing.
+R saw the escaped single quote `\'` and understood you wanted to include that `'` character in the string.
+But when R represents strings, it always uses double quotes, no matter what you told it to begin with.
+In this case, R saw that once it converted your single quoted string into the double-quoted string it likes better, there's no longer a need to escape the single quote inside it.
+We end up with what we'd have gotten if we'd just used double quotes from the start: `"This string includes a single quote: '"`.
+
+Meanwhile, to produce the `"` character in its preferred double-quote representation, R really does need to escape it rather than do a convenient switcheroo.
+If we see the `\` in the output that we don't actually want, that means R is in fact doing the escaping we want.
+When you view the contents of the variable by typing the variable name in the console, using `print()`, or looking in the Environment pane, R is showing you what the string is literally stored as. 
+You *want* that escaping backslash included in the stored character data, or else R would have no way of knowing it needs to be escaped when you call it later.
+
+If you want to see what the string looks like when printed, you can use the `cat()` function, which prints the string without the escaping characters:
+
+```r
+cat(escaped_single_quote)  # This string includes a single quote: '
+cat(escaped_double_quote)  # This string includes a double quote: "
+```
+
+Quote characters are likely to be the most common characters you'll need to escape, but you can also escape other special characters that R would otherwise interpret as doing something functional.
+Outside of regular expressions, that usually means the backslash `\`.
+Escaping an escape character just looks like double escaping: `\\`.
+
+The escape `\` can also kind of reverse-escape.
+Rather than tell R that a special character should be treated as a regular old literal character in a string, *escape sequences* tell R that the next seemingly regular old character should be treated as a special character.
+
+For example, `\n` is an escape sequence for creating a new line in a string, like hitting enter/return when typing in a word processor:
+
+```r
+new_line_string <- "This string has a new line.\nSee?"
+cat(new_line_string)  # This string has a new line.
+                       # See?
+ ```
+
+Notice that we used `cat()` to print the string, rather than just typing the variable name in the console, which would show us how the string is literally stored, including `\n`.
+
+The other escape sequence you may find useful is `\t`, which creates a tab space in a string:
+
+```r
+tabbed_string <- "This string has a tab.\tSee?"
+cat(tabbed_string)  # This string has a tab.	See?
+```
+
+**YNTK about escaping:**
+
+1. In R syntax, you can include quotes and backslashes in strings by escaping them with a backslash `\`, like "`\"` or `\\`.
+2. Including `\n` in a string creates a new line, and `\t` creates a tab space.
+3. When you view a string variable in the console, R shows you how the string is stored, including any escaping characters. You have to use `cat()` to see how it will render visually.
+4. These are the escape rules *for strings in R*. You'll need to follow different rules in regex and markdown, but the principles are the same.
+
+
+### Base R can do string stuff - Useful base R string functions
+
+#### paste & paste0
+
+#### c
+
+#### toupper, tolower
+
+#### is.character
+
+#### toString
+
+#### Pattern matching with grep family
+
+## Match strings
+
+### str_detect
+
+### str_starts
+
+### str_ends
+
+### str_count
+
+## Subsetting and length
+
+### str_sub
+
+### str_subset
+
+### str_length
+
+### str_pad
+
+### str_trunc
+
+### str_trim
+
+## Mutate, join, split
+
+### str_sub (again)
+
+### str_replace, str_replace_all
+
+### str_remove, str_remove_all
+
+### str_to_lower, str_to_upper, str_to_title
+
+### str_split
+
+### str_c, str_glue
+
+### str_flatten
+

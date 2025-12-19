@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6&nbsp; Packages – From Data to Manuscript in R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/r-programming.html" rel="next">
+<link href="../chapters/r-language-basics.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b63e124d7351deed0577b7053fe1fba1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/packages.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Packages</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">From Data to Manuscript in R</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to D2M-R - TEST EDIT 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/solving-problems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Solving (Your Own) Problems</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/rstudio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">RStudio Essentials</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/git-github.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Git &amp; GitHub</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/r-language-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">R Language Basics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/packages.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Packages</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/r-programming.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Intro to Programming in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/tidyverse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Welcome to the Tidyverse!</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/dplyr-tidyr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">dplyr-tidyr</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/stringr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Strings and Character Data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/forcats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">forcats</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/lubridate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">lubridate</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/basics-viz-stats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Basic Visualization &amp; Summary Statistics</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#packages-overview" id="toc-packages-overview" class="nav-link active" data-scroll-target="#packages-overview"><span class="header-section-number">6.1</span> Packages Overview</a></li>
+  <li><a href="#installing-attaching-loading-packages" id="toc-installing-attaching-loading-packages" class="nav-link" data-scroll-target="#installing-attaching-loading-packages"><span class="header-section-number">6.2</span> Installing, attaching, loading packages</a>
+  <ul class="collapse">
+  <li><a href="#installing-packages" id="toc-installing-packages" class="nav-link" data-scroll-target="#installing-packages"><span class="header-section-number">6.2.1</span> Installing packages</a></li>
+  <li><a href="#attaching-loading-packages" id="toc-attaching-loading-packages" class="nav-link" data-scroll-target="#attaching-loading-packages"><span class="header-section-number">6.2.2</span> Attaching (loading) packages</a></li>
+  <li><a href="#loading-functions" id="toc-loading-functions" class="nav-link" data-scroll-target="#loading-functions"><span class="header-section-number">6.2.3</span> Loading functions</a></li>
+  <li><a href="#sec-dependencies" id="toc-sec-dependencies" class="nav-link" data-scroll-target="#sec-dependencies"><span class="header-section-number">6.2.4</span> Dependencies</a></li>
+  <li><a href="#more-on-packages" id="toc-more-on-packages" class="nav-link" data-scroll-target="#more-on-packages"><span class="header-section-number">6.2.5</span> More on packages</a></li>
+  </ul></li>
+  <li><a href="#commonly-used-packages-in-d2m-r" id="toc-commonly-used-packages-in-d2m-r" class="nav-link" data-scroll-target="#commonly-used-packages-in-d2m-r"><span class="header-section-number">6.3</span> Commonly used packages in D2M-R</a>
+  <ul class="collapse">
+  <li><a href="#required-packages" id="toc-required-packages" class="nav-link" data-scroll-target="#required-packages"><span class="header-section-number">6.3.1</span> Required Packages</a></li>
+  <li><a href="#suggested-additional-packages" id="toc-suggested-additional-packages" class="nav-link" data-scroll-target="#suggested-additional-packages"><span class="header-section-number">6.3.2</span> Suggested Additional Packages</a></li>
+  </ul></li>
+  <li><a href="#guided-exercise-packages-and-dependencies" id="toc-guided-exercise-packages-and-dependencies" class="nav-link" data-scroll-target="#guided-exercise-packages-and-dependencies"><span class="header-section-number">6.4</span> Guided Exercise: Packages and Dependencies</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Packages</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="packages-overview" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="packages-overview"><span class="header-section-number">6.1</span> Packages Overview</h2>
+<p>R <em>packages</em> (also known as libraries) are collections of R functions, data, and documentation bundled together to extend the functionality of R. Without packages, you are working with <em>base R</em>, a core set of “built-in” functions and data types.</p>
+<p>Base R includes:</p>
+<ol type="1">
+<li>Key data structures, such as vectors, lists, matrices, and data frames</li>
+<li>Operators, so you can do basic math, evaluate logical comparisons, and create data objects</li>
+<li>Functions that sufficiently carry out common tasks, like reading in tabular data, extracting and manipulating object elements, performing simple summary statistics (and much more)</li>
+<li>Functions that allow a <em>basic</em> implementation of most data analysis tasks, such as reading in data, manipulating data, and plotting data</li>
+</ol>
+<p>But base R is not sufficient for most data analysis tasks beyond the most basic.</p>
+<p>Thankfully, that’s not a problem. The (relative) simplicity of base R is a feature, not a bug. Base R provides the tools to build progressively more complex and specialized functionality, and the open-source nature of R makes it possible for anyone (literally anyone!) to create and share the more complex functions they develop in the form of packages.</p>
+<p>These collections of functions can be designed for extremely specific use cases or broad application for use across many contexts.</p>
+<p>Let’s see some examples of packages for two different purposes, from very broad to very narrow in each category:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Package(s)</th>
+<th>Scope</th>
+<th>Description / Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Data read-in and write-out</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><a href="https://readr.tidyverse.org/"><code>readr</code></a></td>
+<td>Broad</td>
+<td>Import/export of tabular delimited data</td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/hadley/haven"><code>haven</code></a>, <a href="https://rdrr.io/cran/foreign/"><code>foreign</code></a></td>
+<td>Medium</td>
+<td>Load data from proprietary formats (Stata, SPSS, SAS)</td>
+</tr>
+<tr class="even">
+<td><a href="https://googlesheets4.tidyverse.org/"><code>googlesheets4</code></a></td>
+<td>Narrow, but common</td>
+<td>Import/export of Google Sheets</td>
+</tr>
+<tr class="odd">
+<td><a href="https://dbi.r-dbi.org/"><code>DBI</code></a></td>
+<td>Narrow</td>
+<td>Import/export of databases (SQL, etc.)</td>
+</tr>
+<tr class="even">
+<td><a href="https://docs.ropensci.org/phonfieldwork/index.html"><code>phonfieldwork</code></a></td>
+<td>Very narrow</td>
+<td>Import/export of phonetic fieldwork data (Praat, ELAN, etc.)</td>
+</tr>
+<tr class="odd">
+<td><strong>Data visualization</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><a href="https://ggplot2.tidyverse.org/"><code>ggplot2</code></a></td>
+<td>Broad</td>
+<td>Grammar of graphics for flexible and complex visualizations</td>
+</tr>
+<tr class="odd">
+<td><a href="https://plotly.com/r/"><code>plotly</code></a></td>
+<td>Broad, but less popular</td>
+<td>Interactive visualizations</td>
+</tr>
+<tr class="even">
+<td><a href="https://cran.r-project.org/web/packages/vcd/index.html"><code>vcd</code></a></td>
+<td>Medium</td>
+<td>Tools for visualizing categorical data</td>
+</tr>
+<tr class="odd">
+<td><a href="https://corybrunson.github.io/ggalluvial/"><code>ggalluvial</code></a>, <a href="https://haleyjeppson.github.io/ggmosaic/"><code>ggmosaic</code></a></td>
+<td>Narrow</td>
+<td>Specialized plots with ggplot grammar (alluvial, mosaic)</td>
+</tr>
+<tr class="even">
+<td><a href="https://cran.r-project.org/web/packages/xkcd/index.html"><code>xkcd</code></a>, <a href="https://nanx.me/ggsci/"><code>ggsci</code></a></td>
+<td>Very narrow</td>
+<td>Apply pop culture-inspired styles to plots</td>
+</tr>
+</tbody>
+</table>
+<p>These are all packages that I personally use, some (much) more than others. Some of these are so ubiquitous that you can forget they aren’t base R (looking at you, <code>readr</code>); others I’d be willing to bet 99% of readers of this book have never heard of and would never have occasion to use (<code>phonfieldwork</code>, <code>xkcd</code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>).</p>
+<p>Coming back to thinking about packages vs.&nbsp;base R, it’s even more package-y than it sounds. When we talk about “base R,” we’re actually talking about a collection of packages including <code>base</code>, <code>stats</code>, <code>utils</code>, and <code>graphics</code>, among others. Yes, one of the packages in “base R” is called <code>base</code>, which is admittedly confusing. If you’re curious, you can spot base R packages in your packages pane. They are the ones that (thankfully) don’t have an option to delete them. You can also view a list of base packages with:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(<span class="fu">installed.packages</span>(<span class="at">priority =</span> <span class="st">"base"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>What you absolutely need to take away from this is that packages are the key to R’s power and flexibility. <strong>Packages <em>are</em> R. They are not extra.</strong> They are the whole premise of R as a programming language. Don’t be afraid to seek out packages that do what you need, to play around with popular packages even if you don’t have a use for them now, or to <a href="https://r-pkgs.org/index.html">try your hand at creating your own</a>.</p>
+</section>
+<section id="installing-attaching-loading-packages" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="installing-attaching-loading-packages"><span class="header-section-number">6.2</span> Installing, attaching, loading packages</h2>
+<p>To use functions from a package, you need to <em>install</em> it to your computer and then either <em>attach</em> the package to your workspace or <em>load</em> individual functions.</p>
+<p>Think of this like using cloud storage. Here at UChicago, we have free unlimited storage via Box<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. To access your files on your computer, you need to download and install the Box Drive app. You can download a folder to your computer to open the files within it any time. Alternatively, you can open a single file directly from the cloud.</p>
+<p>In this analogy, installing the package with <code>install.packages()</code> is like downloading the Box Drive app. There’s just no way to get to the contents without it.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p>Attaching the package with <code>library()</code> is like downloading a folder from Box to your computer. All the contents of the package (like files in a folder) are there and ready to use.</p>
+<p>Loading a single function with <code>::</code> is like opening a single file directly from the cloud. You can access the contents of that file without downloading it to your computer, but you need to re-access it in the cloud every time you want to open it. You can’t access any other files in the folder without downloading them first.</p>
+<p>In practice, we typically say “loading” instead of “attaching,” but you should be aware of the difference.</p>
+<section id="installing-packages" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="installing-packages"><span class="header-section-number">6.2.1</span> Installing packages</h3>
+<p><em>Install</em> a package with the base R function <code>install.packages()</code>. This function takes a character string with the name of the package you want to install. For example, to install the <code>dplyr</code> package, you would run:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"dplyr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This will download the package from CRAN (the Comprehensive R Archive Network) and install it on your system. You only need to do this <em>the first time</em> you use a package. You do not need to reinstall a package at every new session, but you can use this same command to update a package to the latest version if one is available.</p>
+<p>The packages pane shows you a list of installed packages. You can also install directly from the packages pane, but you shouldn’t, so I’m not going to tell you how.</p>
+</section>
+<section id="attaching-loading-packages" class="level3" data-number="6.2.2">
+<h3 data-number="6.2.2" class="anchored" data-anchor-id="attaching-loading-packages"><span class="header-section-number">6.2.2</span> Attaching (loading) packages</h3>
+<p>Once a package is installed, you need to <em>attach</em> it into your R session to use its functions. You can do this with the <code>library()</code> function, which takes one arguement: the name of the package object you want to attach. For example, to attach the <code>dplyr</code> package, you would run:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>library()</code> function attaches functions from the package to your workspace, but you’ll almost always hear this referred to as “loading” a package. The distinction matters conceptually, but in practice you can just think about this as “loading” a package.</p>
+<p>While you only need to install a package once, you need to attach/load it every time you start a new R session and want to use its functions freely.</p>
+<p>Notice that while <code>install.packages()</code> takes a character string (in quotes) as an argument, <code>library()</code> takes the name of the package object itself. Once the package is installed, it is available as an object in your R environment, so you can refer to it by name without quotes.</p>
+</section>
+<section id="loading-functions" class="level3" data-number="6.2.3">
+<h3 data-number="6.2.3" class="anchored" data-anchor-id="loading-functions"><span class="header-section-number">6.2.3</span> Loading functions</h3>
+<p>If you don’t attach a whole package during your R session you can still “load” just its functions individually as you use them by specifying the containing package with <code>::</code> syntax. For example, if you wanted to use the <code>filter()</code> function from the <code>dplyr</code> package without attaching it, you could run:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">filter</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This will load the <code>filter()</code> function from the <code>dplyr</code> package without attaching the entire package. This is useful if you want to use a function from a package without loading all of its functions into your environment, or if you want to avoid masking issues with functions that have the same name in different packages.</p>
+</section>
+<section id="sec-dependencies" class="level3" data-number="6.2.4">
+<h3 data-number="6.2.4" class="anchored" data-anchor-id="sec-dependencies"><span class="header-section-number">6.2.4</span> Dependencies</h3>
+<p>The same way that package functions are built using base R functions, packages also frequently (usually) build on functions from other packages. When a package uses functions from another package, that other package is its <em>dependency.</em></p>
+<p>There are two big categories of dependencies, <em>hard</em> and <em>soft</em> dependencies. Hard dependencies are required. Functions in the package simply won’t work without them. Soft dependencies are recommended to get the most out of the package, but not strictly necessary. We’ve got three flavors of dependencies in R:</p>
+<ol type="1">
+<li><strong>Depends:</strong> Packages that must be <em>installed and attached</em> for the package to work</li>
+<li><strong>Imports:</strong> Packages that must be <em>installed</em> (but not attached) for the package to work</li>
+<li><strong>Suggests:</strong> Packages that are not required for the package to work, but are recommended for full functionality</li>
+</ol>
+</section>
+<section id="more-on-packages" class="level3" data-number="6.2.5">
+<h3 data-number="6.2.5" class="anchored" data-anchor-id="more-on-packages"><span class="header-section-number">6.2.5</span> More on packages</h3>
+<section id="install-isnt-working" class="level4" data-number="6.2.5.1">
+<h4 data-number="6.2.5.1" class="anchored" data-anchor-id="install-isnt-working"><span class="header-section-number">6.2.5.1</span> Install isn’t working!</h4>
+<p>The <code>install.packages()</code> function only works with packages that are available on CRAN. The vast majority of packages are available this way, but not all. For example, the <code>citr</code> package we will use for easy citation management with Quarto is not available on CRAN due to some CRAN-specific requirements, but is still actively maintained and functional.</p>
+<p>In cases like this we can install the package directly from its GitHub repository using the <code>devtools</code> package. What a funny coincidence that we just installed this package! To install a package from GitHub, you can use the <code>devtools::install_github()</code> function which takes a string argument of everything in the GitHub repo URL following “github.com/”. For example, to install the <code>citr</code> package, you would run:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"crsh/citr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Just because a package is not on CRAN does not mean it is not useful, reliable, or trustable – <code>citr</code> is a great example. Still, you should be cautious with packages that are not on CRAN, as they may not have the same level of scrutiny or quality control as those that are.</p>
+<p>If needed, you can also learn more about <a href="https://www.dataquest.io/blog/install-package-r/">alternative ways to install packages</a>.</p>
+</section>
+<section id="same-function-different-packages-oh-no" class="level4" data-number="6.2.5.2">
+<h4 data-number="6.2.5.2" class="anchored" data-anchor-id="same-function-different-packages-oh-no"><span class="header-section-number">6.2.5.2</span> Same function, different packages, oh no!</h4>
+<p>Function not behaving as expected? Did it do one thing yesterday and something totally different today? The most likely reason is that you messed up your code between then and now. The second most likely reason is that you have two packages loaded that both have a function with the same name, and one of them is masking the other.</p>
+<p>Anyone can make a package, and packages have lots of overlap in use. There are going to be lots of things that do exactly the same thing but are called different things in different packages. There are also just a lot of functions that are going to be named the same thing. Neither situation is a problem, but you do need to be able to recognize when it happens. Once you do, it’s easy to address.</p>
+<p>My go-to example for the many-names-same-thing situation is running ANOVAs.</p>
+<p>There are a lot of packages that have functions for running ANOVAs that all do (basically) the same thing, but they have different names. For example, <code>aov()</code> in base R, <code>anova()</code> in <code>stats</code>, <code>anova_test()</code> in <code>rstatix</code>, and <code>anova.psych()</code> in <code>psych</code>. They all run ANOVAs, but they are different functions with different arguments and outputs. You just need to know which one you want to use and how to use it.</p>
+<p>If you need to run an ANOVA, you can choose the one that’s best suited to your needs. If you just have a simple comparison of means to run, you can go with base <code>aov()</code>. If you want to run a more complex ANOVA with post-hoc tests, you might want to use <code>anova_test()</code> from <code>rstatix</code>. If you want to run a repeated measures ANOVA, you might want to use <code>anova.psych()</code> from the <code>psych</code> package. If you want to use ANOVA to compare model fit, you could use <code>anova()</code> from <code>stats</code>.</p>
+<p>It’s a <em>good</em> thing to have a lot of options, but it’s up to you to keep straight which function does what, where it comes from, how to implement it, and how to interpret the output. Keep in mind that your collaborators (including future-you) may not have the same familiarity or preferences as you do, so it’s a good idea to add comments to your code about why you chose a particular function or package for a specific task.</p>
+<p>More confusing is the case where two packages have functions with the same name that do somewhat or very different things. Mixed effects linear models get me here. The <code>lme4</code> package is the most popular package for running mixed effects models, and it includes a function called <code>lmer()</code>. This particular <code>lmer()</code> has a problem, though: it doesn’t include <span class="math inline">\(p\)</span>-values. Despite my personal objections to the <a href="https://www.taylorfrancis.com/chapters/edit/10.4324/9781315629049-15/eight-common-false-objections-discontinuation-significance-testing-analysis-research-data">obsession with <span class="math inline">\(p\)</span>-values</a>, the reality is that I almost always need to report them. The <code>lmerTest</code> package has a function that does return <span class="math inline">\(p\)</span>-values…also called <code>lmer()</code>. When I call <code>lmer()</code>, what is R to do?</p>
+<p>The simplest solution is to just use one package or the other. If I have <code>lmerTest</code> loaded (more accurately, <em>attached</em>) but not <code>lme4</code>, then <code>lmer()</code> will refer to the <code>lmerTest</code> function. Neat.</p>
+<p>Ok fine, but <code>lme4</code> has a lot of functionality beyond this one specific <code>lmer()</code> function that I want to be able to take advantage of. I want both packages loaded. In this case, R uses <em>masking</em> to decide which package’s function to use. When you attach a package to your session, R attaches all its packages. When you attach another package, it attaches all its packages – even if there was already a package with the same name attached. The new function <em>masks</em> the old one.</p>
+<p>The take-away is that you need to pay attention to the order in which you load packages. If I load <code>lme4</code> first and then <code>lmerTest</code>, I’ll have <code>lmerTest</code>’s <span class="math inline">\(p\)</span>-value version of <code>lmer()</code> by default, but I’ll still have access to everything in <code>lme4</code> that wasn’t overridden by <code>lmerTest</code>.</p>
+<p>Alternatively or additionally, you can use the <code>::</code> syntax to specify which package’s function you want to use. Remember that <code>::</code> searches your installed packages for the function, so you can just specify precisely which version of the function to use and when. This gets very cumbersome, so it’s not something you should default to, but it has important advantages. It’s explicit, so you-the-user and your collaborators know exactly which function is being used. It takes package loading order out of the equation. It also lets you use functions from packages that are not attached, so you can avoid the masking issue entirely.</p>
+</section>
+</section>
+</section>
+<section id="commonly-used-packages-in-d2m-r" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="commonly-used-packages-in-d2m-r"><span class="header-section-number">6.3</span> Commonly used packages in D2M-R</h2>
+<p>In this course, we’ll rely heavily on a set of packages that are commonly used in data analysis, mostly pulling from the tidyverse ecosystem. We’ll also use a handful of packages that are more specialized for the tasks we want to accomplish in our data to manuscript workflow, especially geared toward psychologists and other quantitative social scientists.</p>
+<p>You should install these packages now, and take some time to get a surface level familiarity with them by reading their documentation. Note that tidyverse packages can be installed and loaded either individually or all together with the <code>tidyverse</code> package.</p>
+<section id="required-packages" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="required-packages"><span class="header-section-number">6.3.1</span> Required Packages</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Package Name</th>
+<th>Description</th>
+<th>Documentation Link</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>tidyverse</code></td>
+<td>Ecosystem of packages for data manipulation, visualization, and analysis; includes core tv packages</td>
+<td><a href="https://www.tidyverse.org/">tidyverse.org</a></td>
+</tr>
+<tr class="even">
+<td>tidyverse: <code>dplyr</code></td>
+<td>Data manipulation and transformation</td>
+<td><a href="https://dplyr.tidyverse.org/">dplyr.tidyverse.org</a></td>
+</tr>
+<tr class="odd">
+<td>tidyverse: <code>forcats</code></td>
+<td>Tools for working with categorical variables (factors)</td>
+<td><a href="https://forcats.tidyverse.org/">forcats.tidyverse.org</a></td>
+</tr>
+<tr class="even">
+<td>tidyverse: <code>ggplot2</code></td>
+<td>Data visualization using the grammar of graphics</td>
+<td><a href="https://ggplot2.tidyverse.org/">ggplot2.tidyverse.org</a></td>
+</tr>
+<tr class="odd">
+<td>tidyverse: <code>lubridate</code></td>
+<td>Tools for working with dates and times</td>
+<td><a href="https://lubridate.tidyverse.org/">lubridate.tidyverse.org</a></td>
+</tr>
+<tr class="even">
+<td>tidyverse: <code>readr</code></td>
+<td>Fast and friendly reading of rectangular data</td>
+<td><a href="https://readr.tidyverse.org/">readr.tidyverse.org</a></td>
+</tr>
+<tr class="odd">
+<td>tidyverse: <code>stringr</code></td>
+<td>Consistent, simple tools for working with strings</td>
+<td><a href="https://stringr.tidyverse.org/">stringr.tidyverse.org</a></td>
+</tr>
+<tr class="even">
+<td>tidyverse: <code>tidyr</code></td>
+<td>Data tidying: reshaping and cleaning datasets</td>
+<td><a href="https://tidyr.tidyverse.org/">tidyr.tidyverse.org</a></td>
+</tr>
+<tr class="odd">
+<td><code>bibtex</code></td>
+<td>BibTeX tools for R (bibliography management)</td>
+<td><a href="https://cran.r-project.org/package=bibtex">cran.r-project.org/package=bibtex</a></td>
+</tr>
+<tr class="even">
+<td><code>citr</code></td>
+<td>RStudio add-in to insert citations</td>
+<td><a href="https://github.com/crsh/citr">github.com/crsh/citr</a></td>
+</tr>
+<tr class="odd">
+<td><code>DescTools</code></td>
+<td>Tools for descriptive statistics</td>
+<td><a href="https://cran.r-project.org/package=DescTools">cran.r-project.org/package=DescTools</a></td>
+</tr>
+<tr class="even">
+<td><code>gt</code></td>
+<td>Easily create presentation-ready tables</td>
+<td><a href="https://gt.rstudio.com/">gt.rstudio.com</a></td>
+</tr>
+<tr class="odd">
+<td><code>knitr</code></td>
+<td>Dynamic report generation in R</td>
+<td><a href="https://yihui.org/knitr/">yihui.org/knitr/</a></td>
+</tr>
+<tr class="even">
+<td><code>lme4</code></td>
+<td>Linear and generalized linear mixed-effects models</td>
+<td><a href="https://cran.r-project.org/package=lme4">cran.r-project.org/package=lme4</a></td>
+</tr>
+<tr class="odd">
+<td><code>psych</code></td>
+<td>Procedures for psychological, psychometric, and personality research</td>
+<td><a href="https://cran.r-project.org/package=psych">cran.r-project.org/package=psych</a></td>
+</tr>
+<tr class="even">
+<td><code>quarto</code></td>
+<td>Tools for working with the Quarto markdown publishing system</td>
+<td><a href="https://quarto.org/">quarto.org</a></td>
+</tr>
+<tr class="odd">
+<td><code>rmarkdown</code></td>
+<td>Authoring dynamic documents with R Markdown</td>
+<td><a href="https://rmarkdown.rstudio.com/">rmarkdown.rstudio.com</a></td>
+</tr>
+<tr class="even">
+<td><code>usethis</code></td>
+<td>Automate package and project setup tasks</td>
+<td><a href="https://usethis.r-lib.org/">usethis.r-lib.org</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="suggested-additional-packages" class="level3" data-number="6.3.2">
+<h3 data-number="6.3.2" class="anchored" data-anchor-id="suggested-additional-packages"><span class="header-section-number">6.3.2</span> Suggested Additional Packages</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Package Name</th>
+<th>Description</th>
+<th>Documentation Link</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>broom</code></td>
+<td>Convert statistical analysis objects into tidy tibbles</td>
+<td><a href="https://broom.tidymodels.org/">broom.tidymodels.org</a></td>
+</tr>
+<tr class="even">
+<td><code>data.table</code></td>
+<td>Fast data manipulation and aggregation</td>
+<td><a href="https://rdatatable.io/">rdatatable.io</a></td>
+</tr>
+<tr class="odd">
+<td><code>flextable</code></td>
+<td>Functions for reporting tabular results in R Markdown and Word</td>
+<td><a href="https://davidgohel.github.io/flextable/">davidgohel.github.io/flextable/</a></td>
+</tr>
+<tr class="even">
+<td><code>haven</code></td>
+<td>Import and export of SPSS, Stata, and SAS files</td>
+<td><a href="https://haven.tidyverse.org/">haven.tidyverse.org</a></td>
+</tr>
+<tr class="odd">
+<td><code>janitor</code></td>
+<td>Simple tools for examining and cleaning dirty data</td>
+<td><a href="https://sfirke.github.io/janitor/">sfirke.github.io/janitor/</a></td>
+</tr>
+<tr class="even">
+<td><code>kableExtra</code></td>
+<td>Construct complex tables in R Markdown</td>
+<td><a href="https://haozhu233.github.io/kableExtra/">haozhu233.github.io/kableExtra/</a></td>
+</tr>
+<tr class="odd">
+<td><code>papaja</code></td>
+<td>APA style manuscript preparation with R Markdown</td>
+<td><a href="https://crsh.github.io/papaja/">crsh.github.io/papaja/</a></td>
+</tr>
+<tr class="even">
+<td><code>pwr</code></td>
+<td>Power analysis for general linear models</td>
+<td><a href="https://cran.r-project.org/package=pwr">cran.r-project.org/package=pwr</a></td>
+</tr>
+<tr class="odd">
+<td><code>RColorBrewer</code></td>
+<td>Color palettes for maps and figures</td>
+<td><a href="https://cran.r-project.org/package=RColorBrewer">cran.r-project.org/package=RColorBrewer</a></td>
+</tr>
+<tr class="even">
+<td><code>patchwork</code></td>
+<td>Combine separate ggplot2 plots into the same graphic</td>
+<td><a href="https://patchwork.data-imaginist.com/">patchwork.data-imaginist.com</a></td>
+</tr>
+<tr class="odd">
+<td><code>vcd</code></td>
+<td>Visualizing categorical data</td>
+<td><a href="https://cran.r-project.org/package=vcd">cran.r-project.org/package=vcd</a></td>
+</tr>
+<tr class="even">
+<td><code>ggsci</code></td>
+<td>Scientific journal and sci-fi movie color palettes for ggplot2</td>
+<td><a href="https://nanx.me/ggsci/">nanx.me/ggsci/</a></td>
+</tr>
+<tr class="odd">
+<td><code>purrr</code></td>
+<td>Functional programming tools</td>
+<td><a href="https://purrr.tidyverse.org/">purrr.tidyverse.org</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="guided-exercise-packages-and-dependencies" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="guided-exercise-packages-and-dependencies"><span class="header-section-number">6.4</span> Guided Exercise: Packages and Dependencies</h2>
+<p>The <a href="../exercises/packages-exercise.qmd">Packages and Dependencies</a> exercise will walk you through the process of installing, attaching, and loading packages in R using the <code>devtools</code> package as an example. You’ll also practice finding and reading documentation, and understanding how dependencies work.</p>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Then again, I’d argue everyone should more enthusiastically integrate xkcd into their work.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>If you’re not taking advantage of this, you absolutely should.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Yes, I’m conveniently ignoring that you can get to files via the web interface, but that’s not the point of this analogy.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/r-language-basics.html" class="pagination-link" aria-label="R Language Basics">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">R Language Basics</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/r-programming.html" class="pagination-link" aria-label="Intro to Programming in R">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Intro to Programming in R</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

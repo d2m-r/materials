@@ -1,0 +1,216 @@
+---
+title: "Packages"
+---
+
+## Packages Overview
+
+R *packages* (also known as libraries) are collections of R functions, data, and documentation bundled together to extend the functionality of R. Without packages, you are working with *base R*, a core set of "built-in" functions and data types.
+
+Base R includes:
+
+1.  Key data structures, such as vectors, lists, matrices, and data frames
+2.  Operators, so you can do basic math, evaluate logical comparisons, and create data objects
+3.  Functions that sufficiently carry out common tasks, like reading in tabular data, extracting and manipulating object elements, performing simple summary statistics (and much more)
+4.  Functions that allow a *basic* implementation of most data analysis tasks, such as reading in data, manipulating data, and plotting data
+
+But base R is not sufficient for most data analysis tasks beyond the most basic.
+
+Thankfully, that's not a problem. The (relative) simplicity of base R is a feature, not a bug. Base R provides the tools to build progressively more complex and specialized functionality, and the open-source nature of R makes it possible for anyone (literally anyone!) to create and share the more complex functions they develop in the form of packages.
+
+These collections of functions can be designed for extremely specific use cases or broad application for use across many contexts.
+
+Let's see some examples of packages for two different purposes, from very broad to very narrow in each category:
+
+| Package(s) | Scope | Description / Use Case |
+|----------------------------------|-----------------|---------------------|
+| **Data read-in and write-out** |  |  |
+| [`readr`](https://readr.tidyverse.org/) | Broad | Import/export of tabular delimited data |
+| [`haven`](https://github.com/hadley/haven), [`foreign`](https://rdrr.io/cran/foreign/) | Medium | Load data from proprietary formats (Stata, SPSS, SAS) |
+| [`googlesheets4`](https://googlesheets4.tidyverse.org/) | Narrow, but common | Import/export of Google Sheets |
+| [`DBI`](https://dbi.r-dbi.org/) | Narrow | Import/export of databases (SQL, etc.) |
+| [`phonfieldwork`](https://docs.ropensci.org/phonfieldwork/index.html) | Very narrow | Import/export of phonetic fieldwork data (Praat, ELAN, etc.) |
+| **Data visualization** |  |  |
+| [`ggplot2`](https://ggplot2.tidyverse.org/) | Broad | Grammar of graphics for flexible and complex visualizations |
+| [`plotly`](https://plotly.com/r/) | Broad, but less popular | Interactive visualizations |
+| [`vcd`](https://cran.r-project.org/web/packages/vcd/index.html) | Medium | Tools for visualizing categorical data |
+| [`ggalluvial`](https://corybrunson.github.io/ggalluvial/), [`ggmosaic`](https://haleyjeppson.github.io/ggmosaic/) | Narrow | Specialized plots with ggplot grammar (alluvial, mosaic) |
+| [`xkcd`](https://cran.r-project.org/web/packages/xkcd/index.html), [`ggsci`](https://nanx.me/ggsci/) | Very narrow | Apply pop culture-inspired styles to plots |
+
+These are all packages that I personally use, some (much) more than others. Some of these are so ubiquitous that you can forget they aren't base R (looking at you, `readr`); others I'd be willing to bet 99% of readers of this book have never heard of and would never have occasion to use (`phonfieldwork`, `xkcd`[^r-language-basics-1]).
+
+[^r-language-basics-1]: Then again, I'd argue everyone should more enthusiastically integrate xkcd into their work.
+
+Coming back to thinking about packages vs. base R, it's even more package-y than it sounds. When we talk about "base R," we're actually talking about a collection of packages including `base`, `stats`, `utils`, and `graphics`, among others. Yes, one of the packages in "base R" is called `base`, which is admittedly confusing. If you're curious, you can spot base R packages in your packages pane. They are the ones that (thankfully) don't have an option to delete them. You can also view a list of base packages with:
+
+``` r
+rownames(installed.packages(priority = "base"))
+```
+
+What you absolutely need to take away from this is that packages are the key to R's power and flexibility. **Packages *are* R. They are not extra.** They are the whole premise of R as a programming language. Don't be afraid to seek out packages that do what you need, to play around with popular packages even if you don't have a use for them now, or to [try your hand at creating your own](https://r-pkgs.org/index.html).
+
+## Installing, attaching, loading packages
+
+To use functions from a package, you need to *install* it to your computer and then either *attach* the package to your workspace or *load* individual functions.
+
+Think of this like using cloud storage. Here at UChicago, we have free unlimited storage via Box^[If you're not taking advantage of this, you absolutely should.]. To access your files on your computer, you need to download and install the Box Drive app. You can download a folder to your computer to open the files within it any time. Alternatively, you can open a single file directly from the cloud. 
+
+In this analogy, installing the package with `install.packages()` is like downloading the Box Drive app. There's just no way to get to the contents without it.^[Yes, I'm conveniently ignoring that you can get to files via the web interface, but that's not the point of this analogy.]
+
+Attaching the package with `library()` is like downloading a folder from Box to your computer. All the contents of the package (like files in a folder) are there and ready to use.
+
+Loading a single function with `::` is like opening a single file directly from the cloud. You can access the contents of that file without downloading it to your computer, but you need to re-access it in the cloud every time you want to open it. You can't access any other files in the folder without downloading them first.
+
+In practice, we typically say "loading" instead of "attaching," but you should be aware of the difference.
+
+### Installing packages
+
+*Install* a package with the base R function `install.packages()`. This function takes a character string with the name of the package you want to install. For example, to install the `dplyr` package, you would run:
+
+``` r
+install.packages("dplyr")
+```
+
+This will download the package from CRAN (the Comprehensive R Archive Network) and install it on your system. You only need to do this *the first time* you use a package. You do not need to reinstall a package at every new session, but you can use this same command to update a package to the latest version if one is available.
+
+The packages pane shows you a list of installed packages. You can also install directly from the packages pane, but you shouldn't, so I'm not going to tell you how.
+
+### Attaching (loading) packages
+
+Once a package is installed, you need to *attach* it into your R session to use its functions. You can do this with the `library()` function, which takes one arguement: the name of the package object you want to attach. For example, to attach the `dplyr` package, you would run:
+
+``` r
+library(dplyr)
+```
+
+The `library()` function attaches functions from the package to your workspace, but you'll almost always hear this referred to as "loading" a package. The distinction matters conceptually, but in practice you can just think about this as "loading" a package.
+
+While you only need to install a package once, you need to attach/load it every time you start a new R session and want to use its functions freely. 
+
+Notice that while `install.packages()` takes a character string (in quotes) as an argument, `library()` takes the name of the package object itself. Once the package is installed, it is available as an object in your R environment, so you can refer to it by name without quotes.
+
+
+### Loading functions
+
+If you don't attach a whole package during your R session you can still "load" just its functions individually as you use them by specifying the containing package with `::` syntax. For example, if you wanted to use the `filter()` function from the `dplyr` package without attaching it, you could run:
+
+``` r
+dplyr::filter()
+```
+
+This will load the `filter()` function from the `dplyr` package without attaching the entire package. This is useful if you want to use a function from a package without loading all of its functions into your environment, or if you want to avoid masking issues with functions that have the same name in different packages.
+
+### Dependencies {#sec-dependencies}
+
+The same way that package functions are built using base R functions, packages also frequently (usually) build on functions from other packages. 
+When a package uses functions from another package, that other package is its *dependency.*
+
+There are two big categories of dependencies, *hard* and *soft* dependencies. 
+Hard dependencies are required. 
+Functions in the package simply won't work without them. 
+Soft dependencies are recommended to get the most out of the package, but not strictly necessary. 
+We've got three flavors of dependencies in R:
+
+1.  **Depends:** Packages that must be *installed and attached* for the package to work
+2.  **Imports:** Packages that must be *installed* (but not attached) for the package to work
+3.  **Suggests:** Packages that are not required for the package to work, but are recommended for full functionality
+
+### More on packages
+
+#### Install isn't working!
+
+The `install.packages()` function only works with packages that are available on CRAN. The vast majority of packages are available this way, but not all. For example, the `citr` package we will use for easy citation management with Quarto is not available on CRAN due to some CRAN-specific requirements, but is still actively maintained and functional. 
+
+In cases like this we can install the package directly from its GitHub repository using the `devtools` package. What a funny coincidence that we just installed this package! To install a package from GitHub, you can use the `devtools::install_github()` function which takes a string argument of everything in the GitHub repo URL following "github.com/". For example, to install the `citr` package, you would run:
+
+``` r
+devtools::install_github("crsh/citr")
+```
+
+Just because a package is not on CRAN does not mean it is not useful, reliable, or trustable -- `citr` is a great example. Still, you should be cautious with packages that are not on CRAN, as they may not have the same level of scrutiny or quality control as those that are. 
+
+If needed, you can also learn more about [alternative ways to install packages](https://www.dataquest.io/blog/install-package-r/).
+
+#### Same function, different packages, oh no!
+
+Function not behaving as expected? Did it do one thing yesterday and something totally different today? The most likely reason is that you messed up your code between then and now. The second most likely reason is that you have two packages loaded that both have a function with the same name, and one of them is masking the other.
+
+Anyone can make a package, and packages have lots of overlap in use. 
+There are going to be lots of things that do exactly the same thing but are called different things in different packages. 
+There are also just a lot of functions that are going to be named the same thing.
+Neither situation is a problem, but you do need to be able to recognize when it happens. Once you do, it's easy to address.
+
+My go-to example for the many-names-same-thing situation is running ANOVAs. 
+
+There are a lot of packages that have functions for running ANOVAs that all do (basically) the same thing, but they have different names. For example, `aov()` in base R, `anova()` in `stats`, `anova_test()` in `rstatix`, and `anova.psych()` in `psych`. They all run ANOVAs, but they are different functions with different arguments and outputs. You just need to know which one you want to use and how to use it.
+
+If you need to run an ANOVA, you can choose the one that's best suited to your needs. If you just have a simple comparison of means to run, you can go with base `aov()`. If you want to run a more complex ANOVA with post-hoc tests, you might want to use `anova_test()` from `rstatix`. If you want to run a repeated measures ANOVA, you might want to use `anova.psych()` from the `psych` package. If you want to use ANOVA to compare model fit, you could use `anova()` from `stats`.
+
+It's a *good* thing to have a lot of options, but it's up to you to keep straight which function does what, where it comes from, how to implement it, and how to interpret the output. Keep in mind that your collaborators (including future-you) may not have the same familiarity or preferences as you do, so it's a good idea to add comments to your code about why you chose a particular function or package for a specific task.
+
+More confusing is the case where two packages have functions with the same name that do somewhat or very different things. Mixed effects linear models get me here. The `lme4` package is the most popular package for running mixed effects models, and it includes a function called `lmer()`. This particular `lmer()` has a problem, though: it doesn't include $p$-values. Despite my personal objections to the [obsession with $p$-values](https://www.taylorfrancis.com/chapters/edit/10.4324/9781315629049-15/eight-common-false-objections-discontinuation-significance-testing-analysis-research-data), the reality is that I almost always need to report them. The `lmerTest` package has a function that does return $p$-values...also called `lmer()`. When I call `lmer()`, what is R to do?
+
+The simplest solution is to just use one package or the other. If I have `lmerTest` loaded (more accurately, *attached*) but not `lme4`, then `lmer()` will refer to the `lmerTest` function. Neat.
+
+Ok fine, but `lme4` has a lot of functionality beyond this one specific `lmer()` function that I want to be able to take advantage of. I want both packages loaded. In this case, R uses *masking* to decide which package's function to use. When you attach a package to your session, R attaches all its packages. When you attach another package, it attaches all its packages -- even if there was already a package with the same name attached. The new function *masks* the old one.
+
+The take-away is that you need to pay attention to the order in which you load packages. If I load `lme4` first and then `lmerTest`, I'll have `lmerTest`'s $p$-value version of `lmer()` by default, but I'll still have access to everything in `lme4` that wasn't overridden by `lmerTest`.
+
+Alternatively or additionally, you can use the `::` syntax to specify which package's function you want to use. Remember that `::` searches your installed packages for the function, so you can just specify precisely which version of the function to use and when. This gets very cumbersome, so it's not something you should default to, but it has important advantages. It's explicit, so you-the-user and your collaborators know exactly which function is being used. It takes package loading order out of the equation. It also lets you use functions from packages that are not attached, so you can avoid the masking issue entirely.
+
+## Commonly used packages in D2M-R
+
+In this course, we'll rely heavily on a set of packages that are commonly used in data analysis, mostly pulling from the tidyverse ecosystem.
+We'll also use a handful of packages that are more specialized for the tasks we want to accomplish in our data to manuscript workflow, especially geared toward psychologists and other quantitative social scientists.
+
+You should install these packages now, and take some time to get a surface level familiarity with them by reading their documentation. 
+Note that tidyverse packages can be installed and loaded either individually or all together with the `tidyverse` package.
+
+### Required Packages
+
+| Package Name                | Description                                                                 | Documentation Link                          |
+|-----------------------------|-----------------------------------------------------------------------------|---------------------------------------------|
+| `tidyverse`                 | Ecosystem of packages for data manipulation, visualization, and analysis; includes core tv packages    | [tidyverse.org](https://www.tidyverse.org/) |
+| tidyverse: `dplyr`          | Data manipulation and transformation                                        | [dplyr.tidyverse.org](https://dplyr.tidyverse.org/) |
+| tidyverse: `forcats`        | Tools for working with categorical variables (factors)                      | [forcats.tidyverse.org](https://forcats.tidyverse.org/) |
+| tidyverse: `ggplot2`        | Data visualization using the grammar of graphics                            | [ggplot2.tidyverse.org](https://ggplot2.tidyverse.org/) |
+| tidyverse: `lubridate`      | Tools for working with dates and times                                      | [lubridate.tidyverse.org](https://lubridate.tidyverse.org/) |
+| tidyverse: `readr`          | Fast and friendly reading of rectangular data                               | [readr.tidyverse.org](https://readr.tidyverse.org/) |
+| tidyverse: `stringr`        | Consistent, simple tools for working with strings                           | [stringr.tidyverse.org](https://stringr.tidyverse.org/) |
+| tidyverse: `tidyr`          | Data tidying: reshaping and cleaning datasets                               | [tidyr.tidyverse.org](https://tidyr.tidyverse.org/) |
+| `bibtex`                    | BibTeX tools for R (bibliography management)                                | [cran.r-project.org/package=bibtex](https://cran.r-project.org/package=bibtex) |
+| `citr`                      | RStudio add-in to insert citations                                          | [github.com/crsh/citr](https://github.com/crsh/citr) |
+| `DescTools`                 | Tools for descriptive statistics                                            | [cran.r-project.org/package=DescTools](https://cran.r-project.org/package=DescTools) |
+| `gt`                        | Easily create presentation-ready tables                                     | [gt.rstudio.com](https://gt.rstudio.com/)   |
+| `knitr`                     | Dynamic report generation in R                                              | [yihui.org/knitr/](https://yihui.org/knitr/) |
+| `lme4`                      | Linear and generalized linear mixed-effects models                          | [cran.r-project.org/package=lme4](https://cran.r-project.org/package=lme4) |
+| `psych`                     | Procedures for psychological, psychometric, and personality research        | [cran.r-project.org/package=psych](https://cran.r-project.org/package=psych) |
+| `quarto`                    | Tools for working with the Quarto markdown publishing system                | [quarto.org](https://quarto.org/)           |
+| `rmarkdown`                 | Authoring dynamic documents with R Markdown                                 | [rmarkdown.rstudio.com](https://rmarkdown.rstudio.com/) |
+| `usethis`                   | Automate package and project setup tasks                                    | [usethis.r-lib.org](https://usethis.r-lib.org/) |
+
+
+
+### Suggested Additional Packages
+
+| Package Name        | Description                                                       | Documentation Link                          |
+|---------------------|-------------------------------------------------------------------|---------------------------------------------|
+| `broom`             | Convert statistical analysis objects into tidy tibbles            | [broom.tidymodels.org](https://broom.tidymodels.org/) |
+| `data.table`        | Fast data manipulation and aggregation                            | [rdatatable.io](https://rdatatable.io/)     |
+| `flextable`         | Functions for reporting tabular results in R Markdown and Word    | [davidgohel.github.io/flextable/](https://davidgohel.github.io/flextable/) |
+| `haven`             | Import and export of SPSS, Stata, and SAS files                   | [haven.tidyverse.org](https://haven.tidyverse.org/) |
+| `janitor`           | Simple tools for examining and cleaning dirty data                | [sfirke.github.io/janitor/](https://sfirke.github.io/janitor/) |
+| `kableExtra`        | Construct complex tables in R Markdown                            | [haozhu233.github.io/kableExtra/](https://haozhu233.github.io/kableExtra/) |
+| `papaja`            | APA style manuscript preparation with R Markdown                  | [crsh.github.io/papaja/](https://crsh.github.io/papaja/) |
+| `pwr`               | Power analysis for general linear models                          | [cran.r-project.org/package=pwr](https://cran.r-project.org/package=pwr) |
+| `RColorBrewer`      | Color palettes for maps and figures                               | [cran.r-project.org/package=RColorBrewer](https://cran.r-project.org/package=RColorBrewer) |
+| `patchwork`                 | Combine separate ggplot2 plots into the same graphic                        | [patchwork.data-imaginist.com](https://patchwork.data-imaginist.com/) |
+| `vcd`               | Visualizing categorical data                                      | [cran.r-project.org/package=vcd](https://cran.r-project.org/package=vcd) |
+| `ggsci`               | Scientific journal and sci-fi movie color palettes for ggplot2 | [nanx.me/ggsci/](https://nanx.me/ggsci/) |
+| `purrr`             | Functional programming tools                                      | [purrr.tidyverse.org](https://purrr.tidyverse.org/) |
+
+
+
+## Guided Exercise: Packages and Dependencies
+
+The [Packages and Dependencies](../exercises/packages-exercise.qmd) exercise will walk you through the process of installing, attaching, and loading packages in R using the `devtools` package as an example. You'll also practice finding and reading documentation, and understanding how dependencies work.
+

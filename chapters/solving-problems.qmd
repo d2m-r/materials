@@ -1,0 +1,330 @@
+---
+title: "Solving (Your Own) Problems"
+---
+
+# Overview
+
+*Why is this its own chapter?*
+
+# Best practices
+
+I have to start with a caveat:
+
+This section is intended to be a starting place for students new(ish) to R programming, specifically students in D2M-R who have to meet the expectations of the person who is writing this. Many pieces of advice on this page are generalizable to other programming languages; others are R-specific. I've tried to keep things limited to minimally controversial ideas, but you're allowed to disagree with me here.
+
+Whenever you read about best practices, there is really only one true rule: **The best code is the code that works.**
+
+Aiming to have code that is (1) standardized, (2) intelligible, (3) maintainable, and (4) contextualized should help you create code that works. On top of working, it should hopefully also help you operate in a world of collaborative and open quantitative research. It should put you in the best place for effective troubleshooting, for reproducing analyses, and for returning to your code months or years from now. But ultimately, these are guidelines that are intended to be *helpful*. Try to incorporate these practices into your coding workflow, but be patient and forgiving. If you have to choose between code that's pretty and code that works, choose code that works every time. 
+
+## Standardized
+
+R is a pretty forgiving language. It's whitespace insensitive (in case you don't already believe the [tabs vs spaces debate](https://www.youtube.com/watch?v=oRva7UxGQDw) is irrelevant) and has relatively few forbidden characters or "arbitrary" syntax constraints. If you break a rule you get an error, which is a lot nicer than if it were to just run anyway and produce mysterious, inexplicable results.
+
+This has a lot of advantages, but one downside is that your code can get extremely messy before things actually start to break. You can write perfectly functional R code that is utterly indecipherable to humans, including you-the-coder. Standardizing styling decisions helps keep things organized and human-friendly.
+
+### Style guides
+
+Coding style guides serve the same functions as publication style guides, like AP Style or the New York Times manual of style. They demand (or at least encourage) consistency, which should make things more comprehensible for you and your "readers" (collaborators).
+
+An effective and comprehensive style guide for R programming will establish conventions for naming objects and functions, handling whitespace and punctuation, and preferred syntax or representations (e.g., a rule to use the `<-` assignment operator rather than `=`). It will also usually contain guidelines for otherwise highly subjective things like how to structure comments, how verbose function definitions should be, how to clearly construct error messages, and the necessary elements and formatting of documentation.
+
+The [tidyverse style guide](https://style.tidyverse.org/index.html) is an excellent, comprehensive, and widely used style guide for R. If you don't already have a preferred style guide, I suggest starting here.
+
+### Internal consistency
+
+The best style guide is the one you can stick to. So long as (1) it functions within your environment (no matter how much you'd like to begin your variable names with numerals, it's not a style option) and (2) it's comprehensible (for you totally and to others generally), the internal consistency is what really matters.
+
+Pay attention to how you manage to adhere to your style as you code. Are there guidelines you can't seem to remember or always mess up? Are there things that just confuse you? Do you look back on your code that perfectly follows your style and forget why you styled certain things the way you did? These are most likely to be the breaking points for internal consistency. If some aspect of style isn't helping your code be *more* comprehensible and *more* efficient to review and maintain, it's counterproductive and you should change to something that will be more helpful. 
+
+For example, the tidyverse style guide recommends using underscores when naming all objects. I find that using underscores for everything leads me to mix up different kinds of objects. Is `child_gesture` the name of the dataframe with gesture-level coding or the column in that dataframe that contains frequency of children's gestures? Is `shrug_bar_plot` the modified dataframe that is piped into a ggplot object, the ggplot object itself, the chunk name where the plot is defined, the chunk where it's rendered, or something else? 
+
+It would be great if I was good enough at giving objects informative names (see below!) to not confuse myself with this style, but realistically it doesn't work for me. Instead of using underscore separators for everything, I opt to use periods for "complex" objects like dataframes, underscores for "simple" or "internal" objects like variables, camel-case for "publishable" objects like plots, and hyphens for "containers" like chunk and file names. Some people would find my system infuriating for any number of reasons, but over time I've found it works for me. Since I can be consistent with it, it really speeds up coding and debugging, and it doesn't actively impede comprehensibility for others. That's ultimately what matters.
+
+You can view the custom style guide I (usually) follow [here]{#natalie-style-guide}. Remember this is just what I have found works well for me. It's not "correct" and you don't have to use it!
+
+#### Styling tools
+
+There are (at least) two well-maintained packages that can help you enforce style guides: [lintr](https://lintr.r-lib.org/) and [styler](https://styler.r-lib.org/). Both use tidyverse style by default, but are customizable to your preferred style rules.
+
+#### Final notes on styling
+
+While standardizing your coding style is an essential "best practice," remember that in the end styling is usually not make-or-break for your code. Don't get lost in the weeds. Again: **The best code is the code that works.** You have limited time and energy to work on your project. Before you get too deep into developing your own personalized style or rigorously checking every detail of every script you've ever written to retroactively enforce a style, think about whether that's truly the most productive use of your precious time. Hopefully at some point style really can be high priority, but if that's not where you're at right now, that's fine!
+
+![C Programming Style Guide Cartoon -- "I hate programmers."](../images/cartoons-memes/style-cartoon.png)
+
+One final recommendation: choose where to be cautious. It's easy to avoid special characters even if they're technically permissible sometimes, so just avoid them. Being concise is nice, but it's probably safer to prioritize readability over conciseness. Keep your future self in mind. What can you do now to best help future-you when you come back to this project in a year having completely forgotten everything you're doing now?
+
+## Example: My style guide and practices
+
+You can view the custom style guide I (usually) follow [here](../appendix/natalie-style-guide.qmd). Remember this is just what I have found works well for me. It's not "correct" and you don't have to use it!
+
+
+## Intelligible
+
+### Informative comments
+
+Comments are an essential but easily overlooked part of your code. If you're a beginner coder, commenting may feel burdensome, compounded by the fact that beginner coders should practice over-commenting to an extent (and chill out a bit as they gain experience). Fight the impulse to treat commenting as busy work or an unpleasant obligation. Comments are a critical tool for making something designed to be comprehensible to a machine equally comprehensible to the humans who actually have to do the work of designing and maintaining it.
+
+![Stop sign comments meme](../images/cartoons-memes/stop-sign-comment.jpg)
+Borrowing from [this stackoverflow blog post](https://stackoverflow.blog/2021/12/23/best-practices-for-writing-code-comments/), here are 9 rules for effective commenting:
+
+1. Comments should not duplicate the code. 
+2. Good comments do not excuse unclear code.
+3. If you can't write a clear comment, there may be a problem with the code.
+5. Explain unidiomatic code in comments.
+6. Provide links to the original source of copied code.
+7. Include links to external references where they will be most helpful.
+8. Add comments when fixing bugs.
+9. Use comments to mark incomplete implementations.
+
+Check out the original post for more information on what each of these rules means. The biggest picture take-aways should be that 1) comments are not optional and 2) [the code tells you how, the comments tell you why](https://blog.codinghorror.com/code-tells-you-how-comments-tell-you-why/).
+
+It's also worth pointing out that if you choose to use Copilot when coding in RStudio, writing good comments is what prompts useful code suggestions that are actually in line with what you want.
+
+#### Commit messages
+
+As you get used using github, think about your commit messages as the cousin of in-text comments. Your commit messages should be informative, clear, and concise. Your repo is a living thing (that's the point!) and by the time you're ready to never look at this thing ever again you'll have committed a million changes. Your commit messages should tell that version of you exactly what the purpose of each commit was. 
+
+Imagine you are starting a project 3 years from now. Future-you knows that present-you wrote exactly the code you need at the beginning of present-you's project, but by the end of this project that code was irrelevant and so (rightfully) removed from the "final" version. Future-you looks through the messages, find "Deleted chunk that calculates ratio of giant ducks to tiny dinosaurs in a fair fight," and is indescribably grateful to present-you for writing clear commit messages.
+
+More on commit messages in @sec-git-github.
+
+#### Final note on comments
+
+Personally, I don't mind humorous comments or commit messages. I actively endorse them as a way to let things go, keep your priorities straight, vent frustration, seek some solidarity, and give future-you a chuckle. That said, not everyone appreciates overly casual commenting. Be mindful of keeping your comments professional if that's what your context expects. (Please feel free to let your geek humor flag fly in D2M-R. I always appreciate the occasional "I have no idea why this works but for the love of god don't change it.")
+
+![Good comments are hard. -- Geek and Poke](../images/cartoons-memes/good-comments-cartoon.jpeg)
+
+### Meaningful naming
+
+For some reason every example in every programming tutorial ever will teach you how to create a variable with the name `my_variable` and a function with the name `my_function`. I get it, but these are objectively horrible names. Imagine looking through someone's code and seeing `my_function(my_variable, 2)`. What?? That better come with like 12 lines of comments because otherwise it's total nonsense.
+
+Of course, no one actually recommends using `my_whatever` in your actual code, but it's the principle of the thing! Designing object, function, and file names that actually tell you any useful information can be a lot harder than it sounds, but it's essential for the intelligibility of your code.
+
+> "There are only two hard things in Computer Science: cache 
+> invalidation and naming things." 
+>
+> --- Phil Karlton
+
+The big **rule** here (vs a guideline): Names should describe the named thing.
+
+!["Keep it simple, stupid -- commitstrip.com](../images/cartoons-memes/variable-name-cartoon.jpg)
+A few guidelines for crafting meaningful names ([source](https://dev.to/l222p/code-design-meaningful-variables-names-3enf)):
+
+1. **Avoid disinformation.** Don't include `_df` in the name of a `data.table`, don't name a function `get_number` if it returns a string.
+2. **Use pronounceable names.** Whether you want to or not you'll inevitably talk about your code out loud (even if just to a [rubber duck](https://rubberduckdebugging.com/)). It's a lot easier to ask someone to check for errors in your `child_gesture` table or your `group_SES_quartile` function than `cgtbl` or `grpsq`. This doesn't mean you can't abbreviate: `chi_gest` and `SES4` are perfectly pronounceable too (though less transparent, which is a trade-off you'll need to consider).
+3. **Use searchable names.** `x` is a useful variable in math, not in programming. Plan ahead for when you need to cmd+f to replace all cases of a name with a slightly different version. Examples will often use `p` to name plots, but replacing all `p`s with `pcgChildScatter` will leave you with a lot of `pcgChildScatterivot_longer()`s and `ungroupcgChildScatter()` and `pcgChildScattercg.child.compcgChildScatterare`s.
+4. **Pick one word/format per concept.** You turned a sprawling data frame into 3 manageable intermediate data frames based on groups of related measurements. Call them `gesture.freqs`, `gesture.rates`, and `gesture.ratios` rather than `count.gestures`, `summ.rates.gestures`, and `grats`.
+5. **Avoid encodings.** This is a little more complicated (look at the source link above for more), but the gist is that names should make sense on their own and not implicitly rely on knowing what other things in the code do. The purpose of the function `mean_cgfq` may be decipherable if you know that the dataframe `child.gesture` exists and contains a `frequency` variable, but out of context it's a mystery.
+
+## Maintainable
+
+Aim to create code that is future-proof and collaborator-proof (especially *bad*-collaborator-proof). It can be hard to know in the moment whether you're writing a script you'll never open again or one you'll return to for years to come. Set yourself up for the latter.
+
+### Documentation
+
+Creating documentation doesn't usually need to be a major concern for beginner or intermediate programmers. However, you'll be *depending on* a lot of documentation even if you're not creating it yourself. As you start wading through the world of R packages, pay attention to the differences in documentation. Packages published to CRAN must adhere to minimum standards of documentation. Many larger packages will have their own websites or GitHub repos (in addition to CRAN) with extensive documentation, examples, and FAQs. Smaller independent and specialized packages might have extremely useful functions but leave you desperately trying to work out how to use them effectively.
+
+Any time you construct something usable -- anything from a simple in-line function to a package to a shiny app -- practice coherent documentation. Does your documentation look like the kind of documentation you find helpful? If you hand it off to a friend without any additional guidance can they figure out what to do with it?
+
+Think of multi-line comment chunks as a form of mini-documentation. Explain what the point of a script is at the top of a file, explain what the point of the function you're defining is and what parameters it accepts just above the definition, etc. 
+
+### Lifecycles
+
+#### Function lifecycle
+
+R is constantly evolving, and R functions exist in "lifecycles." 
+
+In general, you want to prioritize using functions that exist in the *stable* stage. A stable function is currently maintained, works with the most current version of R (and any dependent packages), and does not currently have a better option.
+
+Note the use of "current" in those descriptors, though. Any or all of those may change, and it's important to keep on top of things in any code you hope to come back to in the future. 
+
+![Lifecycle stages - sourced from lifecycle.r-lib.org](../images/cartoons-memes/lifecycle.png)
+
+R function lifecycle stages include:
+
+- **Experimental.** This function is in development. Like beta software or an early access video game, this function may or may not be developed into a full, stable release. It may end up replacing currently stable functions, or it may be abandoned tomorrow. Experimental functions can be very helpful for very specific use-cases where stable functions don't yet exist or aren't sufficient, but you should use them with caution and add a comment noting that it's experimental in case it breaks your code when something updates.
+- **Stable.** This function is currently operational, up-to-date, and maintained. This is the default stage, so unless the documentation indicates otherwise you can presume a function is stable. You should prioritize functions in the stable life stage.
+- **Superseded.** This function is still supported and isn't going away any time soon, but it's not going to get any further development. It is safe to use, but there is now an alternative *stable* function that is preferred for its use. A good example here is the `gather` and `spread` functions which have been superseded by `pivot_longer` and `pivot_wider`. Gather and spread were around for a long time and are essential to a lot of operational code, and a lot of people are used to them now and don't really want to switch over to something new; it would be impractical to not support them. But the pivot options are just, well, better. If you have a good reason to favor a superseded function, go for it. If you're not already familiar with it though, it's wiser to spend your time learning the newer, stable replacement.
+- **Deprecated.** This function works now but won't for long. It may already not work with the current version of R, but still works with some operational older versions. Only use deprecated functions as a temporary last resort, and update with stable or experimental functions once you're able.
+
+[Learn more about lifecycles here.](https://lifecycle.r-lib.org/articles/stages.html)
+
+#### Data lifecycle
+
+Your data don't exist in quite such a formal "lifecycle," but you can thing about them in a similar way as you try to future-proof your code:
+
+- **How much could your data change?**
+    - Incomplete datasets will get more data (e.g., pilot datasets -> final datasets)
+    - "Complete" datasets may eliminate some data (e.g., retroactively excluding participants or measurement timepoints)
+  - Variables may need to be combined, anonymized, mutated, etc.
+- **How similar are your data to other data?**
+    - Follow-up studies and replications usually need to make minor (and sometimes major) changes to data format/organization
+    - Problems in data collection stage that are too late to change will mean new data format when they are fixed next time
+    - Other researchers in your area who could benefit from your code might use similar data collection methods but different organization methods
+
+### DRY programming
+
+["DRY" programming](https://www.plutora.com/blog/understanding-the-dry-dont-repeat-yourself-principle) stands for "Don't Repeat Yourself." Generally, stop copying and pasting! There are certainly merits to copy/paste when you're making use of *external* code (e.g., from stackoverflow, chatGPT suggested code, forking a repo, your own old project), but DRY coding means minimizing repetition *internally*, within a single script or project.
+
+When you stay DRY, you:
+
+- **Avoid:**
+  - Propagating mistakes that must be corrected individually
+  - Duplication conflicts
+  - Combing through verbose scripts for minor errors
+- **Promote:**
+  - Replicable, reproducible code
+  - Abstracting code for multiple contexts of use
+  - Code usable by and relevant to other people and future-you
+
+### Abstracted coding
+
+"Abstracting" in the sense of DRY coding usually refers to practices like defining one function to use repeatedly rather than copying and pasting the same block of code and changing variable names every time. Abstraction exists at a finer-grained level as well, such as with paths and variables. Generally, abstracted (relative) paths and variables are more durable that hard-coded (absolute) ones.
+
+#### Paths
+
+Maximally abstracted file path references minimize broken links. As an example:
+
+- <span style="color:red">`Natalie's Work MacBook/Users/Natalie/repos/d2m-r/example-repo/images/barplot.jpg`</span>
+  - Only works on Natalie's work computer no matter what
+- <span style="color:orange">`~/repos/d2m-r/example-repo/images/barplot.jpg`</span>
+  - Works on any machine if it's cloned to this particular location
+- <span style="color:green">`/images/barplot.jpg`</span>
+  - Works when you clone the repo anywhere as long as the internal structure is unmodified
+  
+#### Variables
+
+Your data will change. You want to set yourself up for making as few changes as possible to accommodate changes to your data. This is the same logic as writing your manuscript in R Markdown with in-text code and references!
+
+- <span style="color:red">`my_mean <- (2 + 4)/2`</span>
+    - Always equals 3
+- <span style="color:orange">`x <- 2 ; y <- 4`or `x <- 3` ; `y <- 10the_mean <- (x + y)/2`</span>
+    - Output will change to reflect changes to 2 input variables
+- <span style="color:green">`number_list <- c(2,3)`or `number_list <- 2:8`or `number_list <- c(1,2,8,100)` ; `a_mean <- sum(number_list)/length(number_list)`</span>
+    - Output will change no matter how many input numerals are averaged
+
+## Contextualized
+
+### Programming community "rules"
+
+A lot of "best practices" will apply across the board, but many will be dependent on smaller communities. R programmers don't share exactly the same preferences for practices as C++ or Java coders. R statisticians don't always (or ever) agree with Stats or SPSS users. Those of us working with data within academic research will have very different ideas of effective ways of organizing or presenting data "stories" than data analysts at start-ups or working in finance.
+
+Find your communities (plural) and do your best to respect their rules. This isn't so much about gatekeeping and in-grouping (though it can certainty feel that way). It's more about promoting collaboration. When everyone talks about their work in a similar way -- whether it's using the same style guide, preferring certain plots for certain analyses, opting for one package or another, formatting example random data, whatever -- it's much easier to work in forked repos, respond to crowd-sourced questions, understand others' presentations, and just generally work together toward shared intentions.
+
+Also you'll [appreciate](https://www.reddit.com/r/ProgrammerHumor/) the [memes](https://www.reddit.com/r/rstatsmemes/) more.
+
+### Project priorities
+
+Above all else (or I guess below, since this is the bottom of the section, but I said this at the top, too), **the best code is the code that works.** You have limited time and resources. You have needs and goals specific to your project and to you as an individual. People will refer to best practices "rules," but they are called "best practices" for a reason. They are not hard and fast rules; they aren't supposed to be. They are what *should* be *relatively* the most useful *most of the time*. Get in the *practice* of using these guidelines when you can, but ultimately this is not what your work is about. 
+
+Keep your project's goals as your top priorities. Consider the context of your work and accept that it's not going to be exactly the same as any other context, and it will be vastly different from many. Make these guidelines work for you, stay flexible, and don't worry if and when you need to just say screw this and move on with your life.
+
+## Other
+
+If you're getting to this chapter at the beginning of the course, you can skim this part. Most won't immediately be relevant. But when you get to the point of writing your own manuscript in R Markdown, collaborating on GitHub, or debugging code, you can return here for more specific advice.
+
+### Notebooks, Quarto, and Markdown
+
+#### Editor
+
+Don't use the visual editor! Quarto documentation will tell you to. I am telling you not to. You are in my class. Don't do it.
+
+You may have to delete/edit lines in your yaml header if you accidentally enable the visual editor.
+
+#### Organization
+
+Remember everything will run top to bottom, just like a regular .R script. Right after your YAML header, your first chunks should 1) load all libraries, 2) set document defaults (optional), 3) set a random seed (optional), and 4) source any required external scripts in a sensible order.
+
+#### Code chunks
+
+<!-- The majority of this can move to an intro to quarto chapter in Q2 once that exists. -->
+
+Code chunks should:
+
+- **Do 1 and only 1 thing.** A chunk should serve a single and transparent purpose. As a rule of thumb, if you can't describe what your chunk does in 5 or fewer words, it should probably be more than one chunk. For example, one chunk might: assemble a ggplot, render a plot or table, import or export intermediate datasets, filter data for a specific purpose, print or store the output of a regression. This means you'll sometimes need multiple chunks for things that at first feel like one big thing. 
+    - Example: Include a demographics table in your document 
+        - Chunk 1: Create an intermediate dataset with only relevant demographic variables and observations
+        - Chunk 2: Perform any alternations or calculations (e.g., summarize by gender groups, create income brackets)
+        - Chunk 3: Store a basic kable or table
+        - Chunk 4: Render the kable in the document with the aesthetic details you want
+        - By separating it into multiple chunks, you can easily refer to distinct elements. Maybe you want to create the same demo table for a different dataset. Easy! You'll have a new Chunk 1 but 2-4 are the same. Want to call a value from the table in the text? It's pretty messy to pull that from the "pretty" kable you rendered, but it's simple to pull from the basic kable skeleton you built in chunk 3. Want to print a complete demo table in one place and a summarized table somewhere else? Make an alternative version of chunk 2 for the second table.
+- **Have informative and unique names.** Name your chunks to minimize human error. In addition to helping you stay organized, this will help tremendously with troubleshooting. Error messages during the knitting process don't always give you the precise line number, but will always give you the chunk name where the problem occurred. (This is also a good reason to keep your chunks short and for 1 purpose only.) Aim to have the chunk name clearly indicate the one "thing" your chunk does. By default, I usually use verb-noun names: `read-data`, `summarize-demos`, `build-child-table`, `build-gesture-bar-plot`. The only exception (for me) is chunks that do the actual rendering of tables or plots, which I give a simple label matched to the chunk that built it (e.g., `build-gesture-stacked-bar` saves a plot to the variable `gestureStackedBar` which is then rendered in the chunk named `fig-gesture-stacked-bar`).
+    - Critically, your chunk names should be:
+        - Unique (knitr will throw an error for duplicate chunk names)
+        - Informative (`fig-gesture-stacked-bar` and not `bar-graph`)
+        - Conventional (conservative and correct)
+            - e.g., R variables cannot start with a numeral, so even though chunk names legally can, it's better to avoid it
+            - Don't use underscores or spaces. Even if they "work" they often won't work. Stick to `.` and `-` as separators. 
+- **Specify whether/how they should run and print.** Many chunk options are available here, but at a basic level use `echo` and `include` to tell knitr to show/hide your code and/or output and use `eval` to say whether to run the code at all. You can easily change these chunk settings in RStudio by clicking the gear icon in the top right corner of any chunk.
+    - Show output only: `echo=FALSE`
+    - Show code and output: `echo=TRUE`
+    - Show nothing (run the code without printing anything): `include=TRUE`
+    - Show nothing and do not run code (just ignore the whole chunk): `eval=FALSE, include=FALSE`
+- **Be placed at the point they are needed or referenced.** In theory, you could place every single chunk at the top of the file so long as they are in the correct order relative to each other. In practice, that's impossible to manage. The beauty of R notebooks is the seamless integration of code and narrative, making the whole thing as human-friendly as it is machine-friendly. Keep your chunks as close as possible to the point in the narrative that they are referenced to easily edit both narrative and code as you work.
+- **Be (relatively) short, sourcing longer scripts if necessary.** Using `source()` will run the full code of another file. Long blocks of code or instances where the purpose of code really can't follow the "one-chunk-one-thing" rule may call for sourcing the code as a separate script. This is especially useful for:
+    - Code that you know you will rarely or never need to make dynamic edits to, like a script that imports multiple .csv files, wrangles many sources of data, and produces multiple intermediate datasets that will be the essential data for your whole manuscript. 
+    - Scripts that you run often that aren't project specific. For example, I have a generic `startup.R` script I source that loads my most commonly used libraries, sets my preferred ggplot theme tweaks, and defines color palettes.
+    - Dedicated scripts for defining all the custom functions necessary for the project. Nearly all of my projects source a `functions.R` script, which all start from a basic file that has functions I use in most projects (like one that calculates SD/SE and adds error bars to plots).
+
+
+### GitHub & Collaboration
+
+- Include and maintain both a .gitignore and README.md file in the top level of your repository
+- Make purposeful and wise decisions about managing public, private, and protected data and files
+- Use informative commit messages
+- Pull before you start editing; commit as you work; push when you close your session
+
+![Git xkcd](https://xkcd.com/1597/)
+
+**Never forget that the whole point of using GitHub is version control! **
+
+Do *not* create a new file for each assignment. Your repo is the home of your research project, not a collection of notes and homework. Keep it organized, future-proof, collaborator-friendly, and *contextualized beyond this class*.
+
+# Debugging & Troubleshooting
+
+## Documentation
+
+### Help/lookup functions
+
+### Function documentation
+
+### Package documentation
+
+### Resources
+        
+## Solving your own problems
+
+### Error messages
+
+### Garbage in, garbage out (and other tropes)
+
+### Line-by-line debugging
+
+### Rubber ducking
+        
+## Ask the internet
+
+### Start strong - asking good questions
+
+### Crowdsource
+
+### Use AI constructively
+        
+## Ask humans (for classrooms and group learning)
+
+### Ask your classmates
+
+### Use Slack
+
+### Ask your instructor & TAs
+
+### The D2M-R troubleshooting process
+        
+## Starting from "Nothing" 
+
+## Exercise(s?)
+
+<!-- Create a markdown document that looks matches a screenshot. I haven't explained anything about markdown. -->
+
+<!-- Start a debugging journal (submit for part of the engagement grade at the end of the quarter?) -->

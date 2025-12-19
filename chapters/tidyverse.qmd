@@ -1,0 +1,120 @@
+---
+title: "Welcome to the Tidyverse!"
+---
+
+# Overview of the Tidyverse & tidy data
+
+## The tidy ecosystem
+
+## Tidy data principles
+
+## Core packages in the Tidyverse and general functions
+
+## Terminology
+
+# Importing and exporting with readr
+
+## Overview 
+
+### Tabular data - what counts?
+
+#### File types
+
+#### R objects, including tibbles
+
+### Reading, writing, rereading (intermediate datasets)
+
+## Reading data with read_* functions
+
+## Writing data with write_* functions
+
+## Other packages
+
+### readxl for Excel files
+
+### haven for SPSS, SAS, and Stata files
+
+### googlesheets4 for Google Sheets
+
+### jsonlite for JSON files
+
+### DBI and dbplyr for databases
+
+## Handling common import/export issues
+
+# Data manipulation with dplyr
+
+## Introduction to dplyr
+
+### the point of pipelines (highly readable, but verbose)
+
+### The pipe operator (%>%) and magrittr
+
+### Chaining operations with pipes
+
+## Selecting data
+
+### select, rename
+
+### filter
+
+### arrange
+
+## Manipulating data
+
+### mutate
+
+### summarize
+
+### group_by
+
+### distinct
+
+### count
+
+## Guided Exercise: dplyr practice
+
+# Data tidying with tidyr
+
+## What counts as "tidying" data? 
+
+### Remember what "tidy" means in the tidyverse
+
+### Tidying is reshaping and systematically cleaning data 
+
+## Reshape data
+
+### pivot_longer
+
+### pivot_wider
+
+### cast, melt, gather, spread, etc.
+
+## Combine and split cells
+
+### unite
+
+### separate functions
+
+## Expand tables
+
+### expand
+
+### complete
+
+## Handle missing values
+
+### drop_na
+
+### fill
+
+### replace_na
+
+## Advanced: Nested data
+
+### What is nested data and why might you use it?
+
+### tidyr & nested data
+
+We're not going to cover this in D2MR, but tidyr has functions for creating, reshaping, 
+and transforming nested data.

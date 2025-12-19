@@ -1,0 +1,262 @@
+---
+title: "Git & GitHub"
+---
+
+<!-- As of 6/28/25 -- all text pulled straight from W25 slides as a base -->
+
+# Overview {#sec-git-github}
+
+The point of version control. What *not* to do.
+
+## Git
+
+In brief, a (distributed) version control system for text-based documents, meaning:
+It records the history of each change that you/others submit
+With each submission it records a commit message, timestamp, and contributor
+… You are still responsible for submitting the change to the git record!
+Invented in 2005 by Linus Torvald as part of Linux development. It is free and open-source, and widely used by software developers (and increasingly by other professionals, including scientists)
+It can be installed and run locally and completely offline in a terminal or in a GUI software of your choice (e.g., these).
+Git is very powerful in combination with GitHub, which is a service that facilitates online storage and sharing of your documents. Still highly useful for single users.
+
+Version control:
+History of changes
+Records a commit message with each change, along with timestamp and contributor
+Requires users to record (commit) changes, submit (push) changes, and accept (pull) changes
+
+Open-source with diverse workflow uses:
+Widely used by software developers for 15+ years
+Increasingly used by professionals in both academia and industry
+Can run locally and offline via Terminal (command line)
+
+With GitHub:
+Online storage, sharing, and version control with Git
+Designed to facilitate collaboration, but still useful for individuals
+
+
+### Workflow
+
+explain relationship between rstudio projects and git repos
+caveat that we're talking about projects+git as a default combo, but that's just for this class
+
+Cardinal rules:
+
+1. Pull when you start a new R session.
+2. Commit frequently as you work.
+3. Push when you get up from your computer for any reason.
+
+Create a GitHub repo and corresponding R Project that are always synced
+
+Files:
+README.md: project overview, repo structure, to-do list, etc.
+.gitignore: starting from the R .gitignore template
+yourManuscript.qmd: the home of your eventual publication 
+references.bib: a plain-text file containing all the BibTeX entries cited in your manuscript
+yourCitationStyle.csl: the script used to format in-text and bibliography citations when knitting (not needed if using papaja)
+Folders/directories:
+/localonly: only present in your local R Project directory, listed in your .gitignore and so never synced to github
+/data: .csv/tabular data files for all raw or intermediate datasets read into in your .qmd, optional /raw subfolder for raw data read (only) into unsourced R scripts
+/source: .R scripts to be called in an early chunk of your .qmd, e.g., stylistic preferences, functions, minor data wrangling
+/images: exported figures and any image files to read-in to your R Markdown manuscript
+/sections: ONLY for multi-chapter publications (e.g., dissertations), where each chapter requires a separate .qmd that can run independently
+
+
+
+
+### Git lingo
+        1. Repositories
+            1. repository / repo
+            1. initialize
+            2. clone
+            3. branch & checkout
+        2. Version control
+            1. commit
+            3. stage
+            4. fetch
+            6. pull
+            7. push
+        3. Merging
+            1. diff
+            2. merge
+            3. merge conflict
+            4. rebase
+            5. fast-forward (ff)
+            6. squash
+            7. cherry-pick
+            8. stash
+        4. Remote repositories
+            1. remote
+            2. origin
+            3. upstream
+            4. fork
+            5. pull request
+        5. (Optional) Using Git in the terminal
+
+## Repo structure
+
+### What does and does not go in a repo?
+
+Your R Project is essentially a mirror of your GitHub repo
+It may also contain some files that don’t get uploaded to GitHub
+Stored on your local hard drive 
+DO NOT use any location that syncs to cloud storage!
+Your project and repo both include:
+a README.md file with basic repo documentation
+a .gitignore file that specifies what shouldn’t get synced
+.R (R script) files
+.qmd (R Markdown) files 
+.csv files or other minimal, tabular data
+
+
+
+### Top-level essentials
+        1. README 
+Simple markdown document (.md)
+What you see rendered on a repo's GitHub page
+Describes the repo's purpose and function
+
+Simple markdown document (.md)
+What you see rendered on a repo's GitHub page
+Can do lots of things, but should at a minimum describe:
+Purpose of the repo
+Dataset(s)
+Repo structure
+
+<!-- images of a readme in md and github rendered forms -->
+
+
+        2. .gitignore
+
+Plain text file w/out extension
+List of files & folders that should be excluded from all git processes
+Allows you to protect sensitive data
+
+What is it?
+A text document that lets you keep some things just on your computer, not uploaded to GitHub.
+Why does it start with a period?
+It's marking that it's a hidden file. For the most part, you never need to interact with hidden files (hence the hiding), but .gitignore is an important exception.
+
+Plain text file w/out extension
+Files & folders that should be excluded from all git processes
+Matched on strings in file/folder names, including wildcard characters and simplified regex
+View documentation
+
+<!-- image of R gitignore template -->
+
+Not everything can or should be online.
+Private, sensitive, and protected data should be stored locally.
+Files generated by your scripts are redundant.
+Very large files can exceed upload limits and/or cause RStudio to hang.
+Upload directly through GitHub or use GitHub Desktop for pushes that RStudio can't handle.
+
+Private, sensitive, and protected data should be stored locally and only pushed when you are confident it is in an ethically shareable state
+
+Optionally start from a template
+Use informative  #comments
+Media files (e.g., .wav, .mpg)
+tend to be very large, often sensitive data
+Compiled files (e.g., .doc, .pdf, .png)
+really big, regenerated when you run your code
+A dedicated "localonly" folder
+for stuff you want to ignore that the .gitignore might not otherwise catch – all your sensitive data should be in here
+Meta-process files
+"knitting" creates temporary files as it turns your .Rmd into a pdf document that serve no purpose once the knitting has completed
+e.g., .log, .zip
+"Pretty" files & specialized files
+powerpoints, photos
+no one needs your .bdl*, .ear**, and .mgh files
+
+
+### The rest of your stuff
+
+### Metadata and information
+
+### Example: My go-to repo structure
+
+Files:
+README.md: project overview, repo structure, to-do list, etc.
+.gitignore: starting from the R .gitignore template
+yourManuscript.Rmd: the home of your eventual publication 
+references.bib: a plain-text file containing all the BibTeX entries cited in your manuscript
+yourCitationStyle.csl: the script used to format in-text and bibliography citations when knitting (not needed if using papaja)
+Folders/directories:
+/localonly: only present in your local R Project directory, listed in your .gitignore and so never synced to github
+/data: .csv/tabular data files for all raw or intermediate datasets read into in your .Rmd, optional /raw subfolder for raw data read (only) into unsourced R scripts
+/source: .R scripts to be called in an early chunk of your .qmd, e.g., stylistic preferences, functions, minor data wrangling
+/images: exported figures and any image files to read-in to your R Markdown manuscript
+/sections: ONLY for multi-chapter publications (e.g., dissertations), where each chapter requires a separate .Rmd that can run independently
+
+
+
+## GitHub
+
+### What is GitHub? How is it different from Git?
+
+### GitHub features
+
+#### Issues
+
+#### Pull requests
+
+#### Pages
+
+#### Copilot
+
+#### More
+
+We won't use these in this class, but they're worth knowing about.
+
+1. Actions
+2. Projects
+3. Codespaces
+4. Wikis
+5. Organizations
+
+### Interfacing with GitHub (without RStudio)
+
+#### GitHub website
+
+#### GitHub Desktop
+
+#### Other options
+
+If you're already comfortable with other tools, you can use them to interface with GitHub. 
+We won't use them in this class. Some popular options include:
+
+1. VS Code and other IDEs
+2. GitHub CLI
+
+### Interfacing with GitHub in RStudio
+
+#### Connecting RStudio to GitHub
+
+#### Using GitHub in RStudio
+
+The most common git tasks with RStudio:
+
+1. Cloning a repo
+2. Committing changes
+3. Pushing changes
+4. Pulling changes
+5. Resolving merge conflicts
+6. Creating pull requests
+
+## Git Pains
+
+### Common issues
+
+### Helpful resources
+
+### The nuclear option
+
+# Guided Exercise: Simple GitHub & RStudio sync
+
+Create a repo on GitHub.
+Clone it in RStudio.
+Make a change in RStudio.
+Commit and push the change.
+Check the change on GitHub.
+Make a change on GitHub (and commit).
+Pull the change in RStudio.
+Create a conflict by making and committing a change in RStudio and a different (conflicting) change on GitHub.
+Resolve the conflict in RStudio.
+

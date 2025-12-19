@@ -1,0 +1,28 @@
+# _quarto-book.yml -- profile for book rendering only
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "From Data to Manuscript in R"
+  author: "Natalie Dowling"
+  date: "6/1/2025"
+  chapters:
+    - index.qmd
+    - chapters/intro.qmd
+    - chapters/solving-problems.qmd
+    - chapters/rstudio.qmd
+    - chapters/git-github.qmd
+    - chapters/r-language-basics.qmd
+    - chapters/packages.qmd
+    - chapters/r-programming.qmd
+    - chapters/tidyverse.qmd
+    - chapters/dplyr-tidyr.qmd
+    - chapters/stringr.qmd
+    - chapters/forcats.qmd
+    - chapters/lubridate.qmd
+    - chapters/basics-viz-stats.qmd
+
+format:
+  html:
+    theme: [default, theme/color-theme.scss, theme/d2mr-theme.scss, theme/bubbles.scss]

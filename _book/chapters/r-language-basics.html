@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>5&nbsp; R Language Basics – From Data to Manuscript in R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/packages.html" rel="next">
+<link href="../chapters/git-github.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b63e124d7351deed0577b7053fe1fba1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/r-language-basics.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">R Language Basics</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">From Data to Manuscript in R</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to D2M-R - TEST EDIT 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/solving-problems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Solving (Your Own) Problems</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/rstudio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">RStudio Essentials</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/git-github.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Git &amp; GitHub</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/r-language-basics.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">R Language Basics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Packages</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/r-programming.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Intro to Programming in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/tidyverse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Welcome to the Tidyverse!</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/dplyr-tidyr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">dplyr-tidyr</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/stringr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Strings and Character Data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/forcats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">forcats</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/lubridate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">lubridate</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/basics-viz-stats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Basic Visualization &amp; Summary Statistics</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">5.1</span> Overview</a></li>
+  <li><a href="#r-syntax" id="toc-r-syntax" class="nav-link" data-scroll-target="#r-syntax"><span class="header-section-number">5.2</span> R syntax</a>
+  <ul class="collapse">
+  <li><a href="#sec-r-basics-environments" id="toc-sec-r-basics-environments" class="nav-link" data-scroll-target="#sec-r-basics-environments"><span class="header-section-number">5.2.1</span> Environments</a></li>
+  <li><a href="#variables" id="toc-variables" class="nav-link" data-scroll-target="#variables"><span class="header-section-number">5.2.2</span> Variables</a></li>
+  <li><a href="#function-basics" id="toc-function-basics" class="nav-link" data-scroll-target="#function-basics"><span class="header-section-number">5.2.3</span> Functions</a></li>
+  <li><a href="#data-types" id="toc-data-types" class="nav-link" data-scroll-target="#data-types"><span class="header-section-number">5.2.4</span> Data types</a></li>
+  <li><a href="#operators" id="toc-operators" class="nav-link" data-scroll-target="#operators"><span class="header-section-number">5.2.5</span> Operators</a></li>
+  <li><a href="#comments" id="toc-comments" class="nav-link" data-scroll-target="#comments"><span class="header-section-number">5.2.6</span> Comments</a></li>
+  </ul></li>
+  <li><a href="#r-data-structures" id="toc-r-data-structures" class="nav-link" data-scroll-target="#r-data-structures"><span class="header-section-number">5.3</span> R data structures</a>
+  <ul class="collapse">
+  <li><a href="#vectors" id="toc-vectors" class="nav-link" data-scroll-target="#vectors"><span class="header-section-number">5.3.1</span> Vectors</a></li>
+  <li><a href="#lists" id="toc-lists" class="nav-link" data-scroll-target="#lists"><span class="header-section-number">5.3.2</span> Lists</a></li>
+  <li><a href="#matrices" id="toc-matrices" class="nav-link" data-scroll-target="#matrices"><span class="header-section-number">5.3.3</span> Matrices</a></li>
+  <li><a href="#data-frames" id="toc-data-frames" class="nav-link" data-scroll-target="#data-frames"><span class="header-section-number">5.3.4</span> Data frames</a></li>
+  <li><a href="#tibbles" id="toc-tibbles" class="nav-link" data-scroll-target="#tibbles"><span class="header-section-number">5.3.5</span> Tibbles</a></li>
+  </ul></li>
+  <li><a href="#learn-more" id="toc-learn-more" class="nav-link" data-scroll-target="#learn-more"><span class="header-section-number">5.4</span> Learn More</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">R Language Basics</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="overview" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">5.1</span> Overview</h2>
+<p>R is a programming language and software environment based on another programming language called S. It is primarily used for data management, analysis, and presentation. R is free to use and open-source, making it both approachable to new learners and flexible for advanced users. R is built on collaboration and transparency, with a large community contributing to the development of the language and tools extending its functionality. The R community also works to make R accessible and functional, with extensive documentation for the language itself and its packages of functions. Beyond documentation, you can find a wealth of user-created resources for learning and using R, including freely available tutorials, videos, workshops, and full courses and textbooks (ahem).</p>
+<p>This chapter will introduce you to some of the most critical concepts for programming with R and give you enough basic knowledge to get started writing and running R code without getting bogged down in the weeds of technical details. Some of what you’ll find here is intentionally a bit shortcut-y. We’ll go into more depth on many of these topics in later chapters.</p>
+<p><strong>Fair warning:</strong> It’s hard to explain data types without referencing data structures, data structures without referencing functions, operators without referencing operators, operators without referencing data types…Just bear with it. Take in what you can on your first pass knowing it’s unlikely to make perfect sense immediately.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+R vs.&nbsp;Python
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Both R and Python are popular choices for statistical analysis and visualization in research, and the two have a lot in common. They are both free, open-source languages with large communities and extensive libraries of functions. The biggest difference between the two is that R is primarily focused on statistical analysis and visualization, while Python is a general-purpose programming language that can be used for data analysis as well as a range of other applications. Because R is highly specialized, a little code and knowledge go a long way. Although Python is more widely used generally, R tends to be favored in academic and research settings, especially in the social sciences. There’s really no reason not to just learn both, but this class is about R and you’re the one who chose to take it, so that’s what we’re doing.</p>
+</div>
+</div>
+<section id="rstudio" class="level4" data-number="5.1.0.1">
+<h4 data-number="5.1.0.1" class="anchored" data-anchor-id="rstudio"><span class="header-section-number">5.1.0.1</span> RStudio</h4>
+<p>We talked about RStudio in <span class="quarto-unresolved-ref">?sec-rstudio</span>, but in case you missed it, here’s some things to know as you get started with R.</p>
+<p>R is a programming language; RStudio is an integrated development environment (IDE) for that language. You interact with R via the RStudio software. R exists without RStudio, but not the other way around.</p>
+<p>Well, at least in theory. In practice, RStudio is <em>the</em> way to interact with R. It’s a (relatively) user-friendly interface for writing and executing R code that is pretty streamlined to the needs of the R user. Unlike other popular IDEs (e.g., Visual Studio, AWS, Eclipse), RStudio doesn’t need to meet the needs of <em>any</em> programmer who might be doing <em>anything</em> in <em>any</em> language. Consequently, RStudio is the go-to for R users, since it lacks the clutter that comes with general-purpose IDEs.</p>
+<p><strong>WYNTKN:</strong></p>
+<ol type="1">
+<li>R =/= RStudio…</li>
+<li>…but it kinda might as well.</li>
+</ol>
+</section>
+<section id="object-oriented-programming" class="level4" data-number="5.1.0.2">
+<h4 data-number="5.1.0.2" class="anchored" data-anchor-id="object-oriented-programming"><span class="header-section-number">5.1.0.2</span> Object-oriented programming</h4>
+<p>R is an <em>object-oriented programming language</em>, which means that it is built around the concept of “objects” that contain data and functions. What’s an object? According to <a href="https://en.wikipedia.org/wiki/Object_(computer_science)">Wikipedia</a>, an <em>object</em> is “an entity that has state, behavior, and identity.” I personally find that definition to be baffling, because like…isn’t that anything?</p>
+<p>Well, it kind of <em>is</em> anything. You can think of objects in R as any <em>thing</em> you want to work with in R. If it’s something you’d want to put a label on for some reason, that’s an object. A number or string as a variable to use later? Object. A table with data? Object. The output of a statistical test? Object. A plot? Object.</p>
+<p>You get the idea. Basically, every time you open up a new R session, you are the god of a tiny little empty world. If you want to see something happen in your world, you have to create the stuff that does the happening and is happened to and is the happening.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Want to watch the denizens of your universe put on a play about a magician who eats too much cheese? You have to bring into existence the players, the script, and the stage, but also the concepts of “play,” “magician,” “cheese,” “eating”, and “the amount that is socially and/or biologically too much cheese.”</p>
+<p>In R, if you want to see a graph of the relationship between how much cheese an individual eats and whether or not they are a magician, you have to create that world with objects – the <em>environment</em>. The variables “how much cheese” and “is magician?” are objects. The rows, columns, and values that make up a table of data are objects. Those objects are all inside of an object that is the table itself. The calculation of the association between the two variables is an object. The graph that visualizes the relationship is an object. The axis labels on the plot object are objects…</p>
+<p><strong>WYNTKN:</strong></p>
+<ol type="1">
+<li>R works by doing stuff to stuff.</li>
+<li>So “stuff” has to exist.</li>
+</ol>
+</section>
+</section>
+<section id="r-syntax" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="r-syntax"><span class="header-section-number">5.2</span> R syntax</h2>
+<!-- Men in tights clip of sheriff of rottingham -->
+<div style="float: right; max-width: 50%; margin-left: 1em;">
+<iframe src="https://www.youtube.com/embed/CKhGiFOMsS0" frameborder="0" allowfullscreen="">
+</iframe>
+</div>
+<p>In natural language, syntax is the system of rules that govern how words are combined to form phrases and sentences in meaningful ways. Sentence makes mixing nothing all words of at the a it something up else or mean.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>Some things are nouns, some are verbs. Some verbs need objects, some don’t. Some words mean more than one thing and require specification or context. Some words connect other words together. Some words don’t serve a lot of functional purpose but make the sentence sound better or easier to understand. Words like pronouns can replace other words, but only after following the rules to let you do that. Some words you can omit entirely by restructuring other parts of the sentence. Some rules will technically communicate a meaning correctly, but are much more understandable if there is non-speech stuff like gestures or facial expressions to help clarify the meaning. Some rules are more flexible than others, and some are more rigid. Some rules are more important than others, and some are more about style than substance.</p>
+<p>In a programming language, syntax works similarly. R syntax is the set of rules that govern how you write code in R to make it do what you want it to do. For each example I gave for natural language above, I can think of at least one equivalent situation. Adding in stuff that isn’t necessary to make it easier to read? That’s taking advantage of R being whitespace insensitive. Using gesture to complement ambiguous meaning? That’s using comments. Eliding a subject because it’s implicit or otherwise already understood? That’s skipping optional arguments in functions, or using the pipe operator to pass objects from arguments in one function to arguments in another. You get the picture.</p>
+<p>While programming languages are nowhere near as complex and dynamic as natural languages, you can think about programming syntax as using the same kinds of building blocks.</p>
+<section id="sec-r-basics-environments" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="sec-r-basics-environments"><span class="header-section-number">5.2.1</span> Environments</h3>
+<p>Your R <em>environment</em> is the collection of objects that exist in your R session at any given time. When you start a new R session, your environment is empty. Creating variables, data structures, functions, plots, and other objects adds them to your environment so you can refer to them later.</p>
+<p>Everything in your environment has a unique identifier, the name you give the object. Because identifiers are unique, creating an object with the same name as an existing object will overwrite the existing object with the new one.</p>
+<p>You can see the objects in your environment by looking at the Environment pane in RStudio, or by using the <code>ls()</code> function in the R console to list the objects in your environment. Critically, you can only interact with objects that exist in your environment, and environments are not persistent across R sessions. When you close RStudio, your environment is cleared, and you have to recreate any objects you want to use in the next session.</p>
+</section>
+<section id="variables" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="variables"><span class="header-section-number">5.2.2</span> Variables</h3>
+<p><em>Variables</em> are the nouns of R syntax. The real world is filled with “things,” literal and abstract. Coffee, computer, RStudio, exhaustion, education, Stardew Valley Junimo plushie, the joy of playing Stardew Valley when you should be working… They just kind of exist. I can interact with them directly, but I can’t list out for you the Stardew Valley decor in my office<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> unless I name them. The Junimo is a value, and “Junimo” is the variable name I use to refer to that value.</p>
+<p><img src="../images/desk.png" class="img-fluid" style="max-height: 300px; float: left; margin-right: 1em; margin-bottom: 1em;"></p>
+<p>In R we create variables by assigning a value to a name with the assignment operator <code>&lt;-</code>. Technically you can use <code>=</code> to assign a value to a variable, but you really shouldn’t; <code>&lt;-</code> <a href="https://www.r-bloggers.com/2014/01/difference-between-assignment-operators-in-r/">is the preferred assignment operator in R</a>.</p>
+<p>Once you have created a variable, you can use it in your code to refer to the value it contains, including assigning other variables.</p>
+<div style="clear: left">
+<p>For example:</p>
+</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>the_answer <span class="ot">&lt;-</span> <span class="dv">42</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pi <span class="ot">&lt;-</span> <span class="fl">3.14159</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>round_answer <span class="ot">&lt;-</span> pi<span class="sc">*</span>the_answer</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>my_name <span class="ot">&lt;-</span> <span class="st">"Natalie"</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>your_name <span class="ot">&lt;-</span> <span class="st">"Lucas"</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>our_names <span class="ot">&lt;-</span> <span class="fu">c</span>(my_name, your_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can even assign values to variables using the existing variable itself:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>best_game <span class="ot">&lt;-</span> <span class="st">"Stardew"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>second_word <span class="ot">&lt;-</span> <span class="st">"Valley"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>best_game <span class="ot">&lt;-</span> <span class="fu">paste</span>(best_game, second_word)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="function-basics" class="level3" data-number="5.2.3">
+<h3 data-number="5.2.3" class="anchored" data-anchor-id="function-basics"><span class="header-section-number">5.2.3</span> Functions</h3>
+<p>If variables are nouns, <em>functions</em> are the verbs of R syntax. Functions take stuff and do stuff to it.</p>
+<p>You can recognize a function in R as a word(ish thing) followed by <code>()</code>: <code>mean()</code>, <code>filter()</code>, <code>ggplot()</code>.</p>
+<p>A function is an action itself – working, eating, procrastinating, voting – which exists conceptually on its own just fine. Calculating a mean, filtering to a subset of data, mapping data to a plot – all sensible and understandable on their own, but not necessarily implementable as is.</p>
+<p>To employ a function and tell R to do the thing, you will (usually) put one or details inside the parentheses: <code>mean(x)</code>, <code>filter(data, condition)</code>, <code>ggplot(data = df, aes(x = var1, y = var2))</code>. These are called <em>arguments</em>, and can be values, variables, or even other functions.</p>
+<p>When you pass an argument to a function (i.e., you include it in the parentheses), the function does the action to the argument(s) and <em>returns</em> the result.</p>
+<p>We’ll talk more about arguments in <a href="r-programming.html#sec-programming-functions" class="quarto-xref"><span>Section 7.3</span></a>. Here’s <strong>WYNTKN:</strong></p>
+<ol type="1">
+<li>Functions take 0 or more arguments.</li>
+<li>Arguments can be required or optional.</li>
+<li>View all possible arguments in a function’s documentation with <code>?functionname</code> or <code>??functionname</code>.</li>
+<li>If you pass arguments to a function in the order they are defined in the documentation, you can omit the argument names. Otherwise you start with <code>theargumentname =</code>.
+<ul>
+<li><code>round(3.14159)</code> is the same as <code>round(x = 3.14159)</code>, but <code>round(2. 3.14159)</code> is not the same as <code>round(digits = 2, x = 3.14159)</code>.</li>
+</ul></li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the tidyverse packages to use filter, mutate, str_length, and ggplot</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># String</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a numeric vector of favorite numbers and calculate the mean</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>favorite_numbers <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">37</span>, <span class="dv">42</span>, <span class="dv">101</span>, <span class="dv">202</span>, <span class="dv">1000</span>, <span class="dv">2025</span>, <span class="sc">-</span><span class="dv">3</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>number_words <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"eleven"</span>, <span class="st">"thirty-seven"</span>, <span class="st">"forty-two"</span>, <span class="st">"one hundred one"</span>, </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"two hundred two"</span>, <span class="st">"one thousand"</span>, <span class="st">"two thousand twenty-five"</span>, <span class="st">"negative three"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Do some simple functions with the vectors</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(favorite_numbers)  <span class="co"># returns 426.875</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(number_words)  <span class="co"># returns 8</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a data frame with two columns: number and word</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>numbers_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">number =</span> favorite_numbers,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">word =</span> number_words</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co"># View the first 6 rows of the data frame</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(numbers_df)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co"># View the first 3 rows by adding an optional argument</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(numbers_df, <span class="at">n =</span> <span class="dv">3</span>)  <span class="co"># returns first 3 rows</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Return rows where number is greater than 100</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(numbers_df, number <span class="sc">&gt;</span> <span class="dv">100</span>)  </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a new column 'length' with the number of characters in 'word'</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>numbers_df <span class="ot">&lt;-</span> numbers_df <span class="sc">|&gt;</span> </span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">length =</span> <span class="fu">str_length</span>(word)) </span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the relationship between the number and the length of its word representation</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(numbers_df, <span class="fu">aes</span>(<span class="at">x =</span> number, <span class="at">y =</span> length)) <span class="sc">+</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>At this point it’s not important that you understand everything going on in the code above. Just look at how functions are represented, what arguments can look like, how some arguments are optional, and what the function returns (or doesn’t return) as output.</p>
+<section id="functions-to-get-started" class="level4" data-number="5.2.3.1">
+<h4 data-number="5.2.3.1" class="anchored" data-anchor-id="functions-to-get-started"><span class="header-section-number">5.2.3.1</span> Functions to get started</h4>
+<p>Now is a good time to play around with R functions to get a feel for how they work. The functions below are a collection of some of the base R functions you’re likely to use often. Try running the examples in your R console to see what they do, then try changing the inputs to see how the output changes.</p>
+<p>You can also use the <code>?functionname</code> command to view the documentation for any function, which will describe what the function does, its arguments, and its return value.</p>
+<section id="generally-useful-base-r-functions" class="level5" data-number="5.2.3.1.1">
+<h5 data-number="5.2.3.1.1" class="anchored" data-anchor-id="generally-useful-base-r-functions"><span class="header-section-number">5.2.3.1.1</span> Generally useful base R functions</h5>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 30%">
+<col style="width: 23%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Description</th>
+<th>Example</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>c()</code></td>
+<td>Combine values into a vector</td>
+<td><code>c(1, 2, 3)</code></td>
+<td><code>c(1, 2, 3)</code></td>
+</tr>
+<tr class="even">
+<td><code>paste()</code></td>
+<td>Concatenate strings together</td>
+<td><code>paste("Hello", "world!")</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>data.frame()</code></td>
+<td>Create a data frame from vectors</td>
+<td><code>data.frame(x = 1:3, y = c("a", "b", "c"))</code></td>
+<td>A data frame with 3 rows and 2 columns named <code>x</code> and <code>y</code></td>
+</tr>
+<tr class="even">
+<td><code>class()</code></td>
+<td>Check the data type of an object</td>
+<td><code>class(3.14)</code></td>
+<td><code>"numeric"</code></td>
+</tr>
+<tr class="odd">
+<td><code>str()</code></td>
+<td>Display the structure of an object</td>
+<td><code>str(mtcars)</code></td>
+<td>A summary of the <code>mtcars</code> data frame</td>
+</tr>
+<tr class="even">
+<td><code>length()</code></td>
+<td>Get the length of a vector</td>
+<td><code>length(c(1, 2, 3, 4, 5))</code></td>
+<td><code>5</code></td>
+</tr>
+<tr class="odd">
+<td><code>head()</code></td>
+<td>View the first few rows of a data frame or vector</td>
+<td><code>head(mtcars)</code></td>
+<td>The first 6 (default) rows of the <code>mtcars</code> data frame</td>
+</tr>
+<tr class="even">
+<td><code>summary()</code></td>
+<td>Get a summary of a data frame or vector</td>
+<td><code>summary(mtcars)</code></td>
+<td>Summary statistics for each column in the <code>mtcars</code> data frame</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="math-statistics" class="level5" data-number="5.2.3.1.2">
+<h5 data-number="5.2.3.1.2" class="anchored" data-anchor-id="math-statistics"><span class="header-section-number">5.2.3.1.2</span> Math &amp; statistics</h5>
+<p>For the examples below, start with defining a vector of numeric values:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>number_list <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">37</span>, <span class="dv">42</span>, <span class="dv">101</span>, <span class="dv">202</span>, <span class="dv">1000</span>, <span class="dv">2025</span>, <span class="sc">-</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 30%">
+<col style="width: 23%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Description</th>
+<th>Example</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>round()</code></td>
+<td>Round a numeric value to a specified number of decimal places</td>
+<td><code>round(67.1988, 2)</code></td>
+<td>67.2</td>
+</tr>
+<tr class="even">
+<td><code>sum()</code></td>
+<td>Calculate the sum of a numeric vector</td>
+<td><code>sum(number_list)</code></td>
+<td>3415</td>
+</tr>
+<tr class="odd">
+<td><code>min()</code></td>
+<td>Find the minimum value in a numeric vector</td>
+<td><code>min(number_list)</code></td>
+<td>-3</td>
+</tr>
+<tr class="even">
+<td><code>max()</code></td>
+<td>Find the maximum value in a numeric vector</td>
+<td><code>max(number_list)</code></td>
+<td>2025</td>
+</tr>
+<tr class="odd">
+<td><code>mean()</code></td>
+<td>Calculate the mean of a numeric vector</td>
+<td><code>mean(number_list)</code></td>
+<td>426.875</td>
+</tr>
+<tr class="even">
+<td><code>median()</code></td>
+<td>Calculate the median of a numeric vector</td>
+<td><code>median(number_list)</code></td>
+<td>71.5</td>
+</tr>
+<tr class="odd">
+<td><code>sd()</code></td>
+<td>Calculate the standard deviation of a numeric vector</td>
+<td><code>sd(number_list)</code></td>
+<td>726.7456693</td>
+</tr>
+<tr class="even">
+<td><code>cor()</code></td>
+<td>Calculate the correlation between two numeric vectors</td>
+<td><code>cor(number_list[1:4], number_list[5:8])</code></td>
+<td>-0.2855236</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="data-types" class="level3" data-number="5.2.4">
+<h3 data-number="5.2.4" class="anchored" data-anchor-id="data-types"><span class="header-section-number">5.2.4</span> Data types</h3>
+<div class="clearfix">
+<div class="callout callout-style-default callout-note callout-titled" style="float:right; width: 50%; margin-left: 1.5em; margin-top:0px">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Complex and raw data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For our purposes, we don’t need to worry about complex and raw data types. <em>Complex</em> objects use complex (i.e.&nbsp;both real and imaginary <span class="math inline">\(i\)</span>); <em>raw</em> objects are used to represent literal binary data. It’s unlikely that as a researcher in psychology or other social sciences you will need to use these data types directly, but you can start to learn more about complex numbers in R <a href="https://www.r-bloggers.com/2009/12/using-complex-numbers-in-r/">here</a> and raw data <a href="https://rdrr.io/r/base/raw.html">here</a> if you’re interested.</p>
+</div>
+</div>
+<p>Data you can work with in R takes one of 6 forms: <strong>numeric</strong>, <strong>integer</strong>, complex, <strong>character</strong>, <strong>logical</strong>, and raw.</p>
+<p>Aside from these 6 “base” data types, we commonly talk about a few other kinds of things using the same kind of language we use to talk about data types, including <strong>factors</strong>, <strong>dates</strong>, and <strong>date-times/POSIX</strong>.</p>
+</div>
+<p>Here’s a table summarizing the 4 R base data types we use frequently and the 3 honorary ones:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 38%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Data type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Numeric</td>
+<td>Decimal numbers, including whole numbers</td>
+<td><code>3.14</code>, <code>42.0</code>, <code>-1.5</code></td>
+</tr>
+<tr class="even">
+<td>Integer</td>
+<td>Whole numbers, represented with an <code>L</code> suffix</td>
+<td><code>42L</code>, <code>-1L</code>, <code>1000L</code></td>
+</tr>
+<tr class="odd">
+<td>Logical</td>
+<td>Boolean values, either <code>TRUE</code> or <code>FALSE</code></td>
+<td><code>TRUE</code>, <code>FALSE</code>, <code>x &gt; 5</code></td>
+</tr>
+<tr class="even">
+<td>Character</td>
+<td>Text strings, enclosed in quotes</td>
+<td><code>"hello"</code>, <code>'123'</code>, <code>"R is great!"</code></td>
+</tr>
+<tr class="odd">
+<td>Factor</td>
+<td>Leveled categorical data, stored as integers with labels</td>
+<td><code>factor(c("low", "medium", "high"))</code></td>
+</tr>
+<tr class="even">
+<td>Date</td>
+<td>Dates, stored as a special class of object</td>
+<td><code>as.Date("2025-01-31")</code></td>
+</tr>
+<tr class="odd">
+<td>POSIXct</td>
+<td>Date-time objects, which include both date and time</td>
+<td><code>as.POSIXct("1776-07-04 12:01:59")</code></td>
+</tr>
+</tbody>
+</table>
+<p>You can check the data type of an object using the <code>class()</code> function, which will return the class of the object. Try using <code>class()</code> on the examples above to see what it returns, like:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="fl">3.14</span>)          <span class="co"># "numeric"</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="dv">42</span>L)           <span class="co"># "integer"</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="cn">TRUE</span>)          <span class="co"># "logical"</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="st">"hello"</span>)       <span class="co"># "character"</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">"low"</span>, <span class="st">"medium"</span>, <span class="st">"high"</span>)))  <span class="co"># "factor"</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="fu">as.Date</span>(<span class="st">"2025-01-31"</span>))  <span class="co"># "Date"</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="fu">as.POSIXct</span>(<span class="st">"1776-07-04 12:01:59"</span>))  <span class="co"># "POSIXct" "POSIXt"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Notice that for our 3 honorary data types we didn’t just pass it a value, we passed it a function that turned a value into the type we wanted.</p>
+<p>When you run <code>class()</code> and it returns something, it’s creating a data object which has to have a type itself. See if you can figure out what kind of data is being returned with <code>class()</code> by using <code>class()</code><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<section id="numeric" class="level4" data-number="5.2.4.1">
+<h4 data-number="5.2.4.1" class="anchored" data-anchor-id="numeric"><span class="header-section-number">5.2.4.1</span> Numeric</h4>
+<p><em>Numeric</em> variables are, unsurprisingly, numbers. Basically any number that you can treat like a number. If you added 0 to it, would it equal itself? If so, it’s numeric. (As opposed to a string that looks like a number, like <code>"100"</code>. Can’t add 0 to that. If you had to find a way to force it, it would probably be something like concatenation: <code>"1000"</code>.)</p>
+<p>Create a numeric variable by assigning a number made up of digits, decimals, and/or negative signs to a variable name:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>my_number <span class="ot">&lt;-</span> <span class="fl">3.14</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>my_other_number <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">42</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="integer" class="level4" data-number="5.2.4.2">
+<h4 data-number="5.2.4.2" class="anchored" data-anchor-id="integer"><span class="header-section-number">5.2.4.2</span> Integer</h4>
+<p>The <em>integer</em> variable is a subset of numeric variables. A number that does not have a decimal point is an integer. Integers are whole numbers (1, 5, 100000), negative whole numbers (-1, -5, -100000), and zero (0).</p>
+<p>Pick your favorite number without a decimal point, and assign it to a variable name, then run <code>class()</code> on that variable to see its data type:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>lucky <span class="ot">&lt;-</span> <span class="dv">11</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(lucky)  <span class="co"># ???integer???</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Running class on something that looks like an integer will return numeric, not integer. Remember that integers are a subset of numeric variables, so R is taking a better-safe-than-sorry approach and assuming you want the more generic, broad-scope version of what you gave it.</p>
+<p>If you want to specify a variable as an integer, you can do so by adding an <code>L</code> suffix to the number when you assign it to a variable:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>luckier <span class="ot">&lt;-</span> <span class="dv">11</span>L</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(luckier)  <span class="co"># "integer"!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can also convert an existing numeric value to an integer with <code>as.integer()</code>:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>my_number <span class="ot">&lt;-</span> <span class="dv">42</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_number)  <span class="co"># "numeric"</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>my_integer <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(my_number)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_integer)  <span class="co"># "integer"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can use <code>as.integer()</code> on non-integer numeric values. The result will be everything before the decimal point, effectively rounding down to the nearest whole number:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>my_decimal <span class="ot">&lt;-</span> <span class="fl">4.2</span> <span class="co"># numeric type</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>another_integer <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(my_decimal) <span class="co"># 4 - integer type</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Specifying data as integer with <code>L</code> or converting it with <code>as.integer()</code> typically isn’t necessary, but it can be useful when you need to ensure that a value is treated as an integer, like as an argument of a function that only accepts integers.</p>
+<p>The flip of the integer is a <em>double</em> variable, which is the default numeric type in R. It just means the number can have a decimal point, whether or not it’s visually represented. Since numeric values are double by default, you won’t see <code>class()</code> return “double”, you just mentally note that that’s what you’ve got.</p>
+</section>
+<section id="sec-data-types-character" class="level4" data-number="5.2.4.3">
+<h4 data-number="5.2.4.3" class="anchored" data-anchor-id="sec-data-types-character"><span class="header-section-number">5.2.4.3</span> Character</h4>
+<p><em>Character</em> variables are “strings” of text, which can include letters, numbers, punctuation, and other symbols. You’ll hear a few different terms that all functionally mean the same thing, including “character”, “string”, “character vector”, and “text”.</p>
+<p>A <em>character</em> is the smallest element that can be represented in text. Individual letters like “d” or “R”, digits like “2”, and symbols like “-”. R is case sensitive, so “d” and “D” are different characters.</p>
+<p>Think of a <em>string</em> as the actual sequence of characters strung together. <code>d2m-R</code> is a string of 5 characters: <code>d</code>, <code>2</code>, <code>m</code>, <code>-</code>, and <code>R</code>.</p>
+<p>A <em>character vector</em> is a collection of one or multiple strings. The string <code>d2m-R</code> is a list of 1 sequence of (5) characters.</p>
+<p>This gets confusing, but in practice this doesn’t matter much. <em>Text</em> is a more general term without a specific technical definition in R, often used to talk about strings and character data.</p>
+<p>You’ll often hear “text,” “string,” and “character” used interchangeably. You just need to know that “character” is the technical term for the data type in R and “string” is the sequence of text that your human brain is processing as a single meaningful unit.</p>
+<p>We create a character variable by assigning a string of text to a variable name, using either single or double quotes to enclose the text:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>with_single_quotes <span class="ot">&lt;-</span> <span class="st">'This string uses single quotes.'</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>with_double_quotes <span class="ot">&lt;-</span> <span class="st">"This string uses double quotes."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Why the option to use either single or double quotes? Try running these two lines of code:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>no_single_quotes <span class="ot">&lt;-</span> <span class="st">"This string doesn't use single quotes."</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>no_double_quotes <span class="ot">&lt;-</span> <span class="st">'This string doesn'</span>t use double quotes.<span class="st">'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The second line will throw an “unexpected symbol” error. R saw you start a string with <code>'</code>, looked for another <code>'</code> to end the string, and treated everything between them as the string. When it got to the “t” in “doesn’t”, R no longer thought you were trying to define a string, and it didn’t know what do with the input <code>t use double quotes.'</code></p>
+<p>Generally I recommend using double quotes for strings, since it avoids the need to escape single quotes in contractions and possessives. Use single quotes in the rare cases you need to include double quotes in a string.</p>
+<p>In <span class="quarto-unresolved-ref">?sec-stringr</span>, we’ll cover how to include single quotes in single quoted strings (and double in double) if needed by <em>escaping</em> the quote character with a <code>\</code>. In that chapter we’ll talk a lot more about working with strings in R, including how to manipulate and analyze text data using the tidyverse <span class="pkg"><a href="https://stringr.tidyverse.org/">stringr</a></span> package, your go-to for working with strings in R.</p>
+</section>
+<section id="logical" class="level4" data-number="5.2.4.4">
+<h4 data-number="5.2.4.4" class="anchored" data-anchor-id="logical"><span class="header-section-number">5.2.4.4</span> Logical</h4>
+<p><em>Logical</em> variables are Boolean values, meaning they can only take on one of two possible values: <code>TRUE</code> or <code>FALSE</code>.</p>
+<p>In R, logical values are written in all caps, either the whole word or the first letter:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>is_true <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>is_false <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>also_true <span class="ot">&lt;-</span> T</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>also_false <span class="ot">&lt;-</span> F</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>not_logical <span class="ot">&lt;-</span> true  <span class="co"># Error: object 't' not found</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>also_not_logical <span class="ot">&lt;-</span> f  <span class="co"># Error: object 'f' not found</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Logical variables are usually the result of comparison operations, which evaluate to either <code>TRUE</code> or <code>FALSE</code>:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>is_greater <span class="ot">&lt;-</span> <span class="dv">5</span> <span class="sc">&gt;</span> <span class="dv">3</span>  <span class="co"># TRUE</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>is_equal <span class="ot">&lt;-</span> <span class="dv">5</span> <span class="sc">==</span> <span class="dv">5</span>   <span class="co"># TRUE</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>is_less <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="sc">&lt;</span> <span class="dv">1</span>     <span class="co"># FALSE</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>is_not_equal <span class="ot">&lt;-</span> <span class="dv">5</span> <span class="sc">!=</span> <span class="dv">5</span>  <span class="co"># FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>More on logical comparisons in <a href="#sec-comparison-operators" class="quarto-xref"><span>Section 5.2.5.2</span></a>.</p>
+<p>In practice, you’ll usually use logical variables in the context of conditional statements and loops. More on those in <a href="r-programming.html#sec-control-flow" class="quarto-xref"><span>Section 7.4</span></a>.</p>
+<p>You may also encounter logical variables directly in your data (e.g., survey data where respondents answer yes/no questions) or need to wrangle categorical data into logical variables.</p>
+</section>
+<section id="factor" class="level4" data-number="5.2.4.5">
+<h4 data-number="5.2.4.5" class="anchored" data-anchor-id="factor"><span class="header-section-number">5.2.4.5</span> Factor</h4>
+<p><em>Factors</em> variables represent discrete groups or levels. This is the word R uses for what you may prefer to call categorical, nominal, ordinal, or discrete variables (among others).</p>
+<p>Factor variables may not be immediately distinguishable from character variables when you look over your data, but they function very differently.</p>
+<p>A character variable is a string of text, and all strings are treated as unique values – even if they are identical. While R can compare two strings and determine whether they are identical:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>is_same <span class="ot">&lt;-</span> <span class="st">"happy family"</span> <span class="sc">==</span> <span class="st">"happy family"</span>  <span class="co"># TRUE</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>is_different <span class="ot">&lt;-</span> <span class="st">"unhappy family"</span> <span class="sc">==</span> <span class="st">"Unhappy Family"</span>  <span class="co"># FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>it can’t know whether strings are <em>meaningfully</em> identical.</p>
+<p>Converting a character variable – or any variable with discrete values – to a factor variable tells R that the values represent meaningful groups or levels. Each unique string it detects is treated as a level of the factor variable.</p>
+<p>You’ve got a survey about college students’ names, their breed of pet, and overall happiness on a 4-point scale (1 = horribly depressed, 2 = mostly numb, 3 = pretty ok, 4 = weirdly great):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>survey_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">name =</span> <span class="fu">c</span>( <span class="st">"David"</span>, <span class="st">"Eve"</span>, <span class="st">"Jamal"</span>, <span class="st">"Alice"</span>, <span class="st">"Fatima"</span>, <span class="st">"Grace"</span>, <span class="st">"Alice"</span>, <span class="st">"Heidi"</span>, <span class="st">"Bob"</span>, <span class="st">"Carlos"</span>, <span class="st">"Ivan"</span>, <span class="st">"Grace"</span>),</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">pet_breed =</span> <span class="fu">c</span>(<span class="st">"dog"</span>, <span class="st">"none"</span>, <span class="st">"dog"</span>, <span class="st">"bird"</span>, <span class="st">"cat"</span>, <span class="st">"dog"</span>, <span class="st">"cat"</span>, <span class="st">"none"</span>, <span class="st">"fish"</span>, <span class="st">"cat"</span>, <span class="st">"none"</span>, <span class="st">"ignuana"</span>),</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">happiness =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">4</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>survey_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     name pet_breed happiness
+1   David       dog         3
+2     Eve      none         4
+3   Jamal       dog         2
+4   Alice      bird         1
+5  Fatima       cat         3
+6   Grace       dog         4
+7   Alice       cat         2
+8   Heidi      none         3
+9     Bob      fish         1
+10 Carlos       cat         4
+11   Ivan      none         1
+12  Grace   ignuana         4</code></pre>
+</div>
+</div>
+<p>If you run <code>class()</code> on each of the columns, you’ll see that <code>name</code> and <code>pet_breed</code> are character variables, while <code>happiness</code> is numeric:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(survey_data<span class="sc">$</span>name)        <span class="co"># "character"</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(survey_data<span class="sc">$</span>pet_breed)   <span class="co"># "character"</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(survey_data<span class="sc">$</span>happiness)    <span class="co"># "numeric"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>It makes sense that <code>name</code> is a character variable, since names are unique strings of text. Even if a couple are repeated, that’s just coincidence. We don’t care about an effect of “name.”</p>
+<p>The <code>pet_breed</code> character variable would be more appropriately handled as a factor variable, since the values represent discrete groups. David, Jamal, and Grace all have dogs – we need to be able to treat all cases of <code>dog</code> the same way to do anything with that information.</p>
+<p>The way it’s being handled right now just isn’t helpful, which you can see easily by summarizing the data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(survey_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     name            pet_breed           happiness    
+ Length:12          Length:12          Min.   :1.000  
+ Class :character   Class :character   1st Qu.:1.750  
+ Mode  :character   Mode  :character   Median :3.000  
+                                       Mean   :2.667  
+                                       3rd Qu.:4.000  
+                                       Max.   :4.000  </code></pre>
+</div>
+</div>
+<p>We can’t learn anything about patterns with pet breed here. It needs to be a factor variable.</p>
+<p>There are two big base functions you need working with factors; You can convert a character variable to a factor variable with <span class="func">factor()</span> and look at the levels of the factor with <span class="func">levels()</span>:</p>
+<p>Now summarizing the data immediately gives us some quick, useful information about the distribution of pet breeds in our sample:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(factored_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     name             pet_breed   happiness    
+ Length:12          bird   :1   Min.   :1.000  
+ Class :character   cat    :3   1st Qu.:1.750  
+ Mode  :character   dog    :3   Median :3.000  
+                    fish   :1   Mean   :2.667  
+                    ignuana:1   3rd Qu.:4.000  
+                    none   :3   Max.   :4.000  </code></pre>
+</div>
+</div>
+<p>Pet breed is an <em>unordered</em> factor. There is no objective way to rank them. You can’t mathematically say that a dog is “more” or “less” than a cat, however passionately you may feel one way or the other.</p>
+<p>The <code>happiness</code> variable is numeric, representing a 4-point scale of overall happiness. If this was truly a numeric, continuous variable, what would it mean to have a happiness level of 2.334? Somewhere between mostly numb and pretty ok, but with no meaningful precision.</p>
+<p>This is actually an <em>ordered</em> factor (or ordinal variable), meaning that the values represent a meaningful order or ranking, but the intervals between the values are not necessarily equal or divisible. We can convert this numeric-looking variable to a factor the same way we did with the string-looking variable, using <code>factor()</code>, but we need to add an argument to specify that the levels are ordered:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert happiness to an ordered factor variable</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>factored_data<span class="sc">$</span>happiness <span class="ot">&lt;-</span> <span class="fu">factor</span>(factored_data<span class="sc">$</span>happiness, </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>), <span class="co"># r can usually figure this out on its own, but it doesn't hurt</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>                                 </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># check the class and levels of the new ordered factor variable</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(factored_data<span class="sc">$</span>happiness)  <span class="co"># "ordered" "factor"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "ordered" "factor" </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(factored_data<span class="sc">$</span>happiness)  <span class="co"># "1" "2" "3" "4"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "1" "2" "3" "4"</code></pre>
+</div>
+</div>
+<p>At this point, you could decide that it’s more useful to have the levels labeled with their meanings instead of numbers. Good old <code>factor()</code> can do that too, with the <code>labels</code> argument:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert happiness to an ordered factor variable with labels</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>factored_data<span class="sc">$</span>happiness_label <span class="ot">&lt;-</span> <span class="fu">factor</span>(factored_data<span class="sc">$</span>happiness, </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>), </span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"horribly depressed"</span>, <span class="st">"mostly numb"</span>, <span class="st">"pretty ok"</span>, <span class="st">"weirdly great"</span>),</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>                                 </span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co"># check the class and levels of the new ordered factor variable with labels</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(factored_data<span class="sc">$</span>happiness_label)  <span class="co"># "ordered" "factor"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "ordered" "factor" </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(factored_data<span class="sc">$</span>happiness_label)  <span class="co"># "horribly depressed" "mostly numb" "pretty ok" "weirdly great"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "horribly depressed" "mostly numb"        "pretty ok"         
+[4] "weirdly great"     </code></pre>
+</div>
+</div>
+<p>Looking at the structure of the data frame can give some clarity on what R is doing with the factor variables:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(factored_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   12 obs. of  4 variables:
+ $ name           : chr  "David" "Eve" "Jamal" "Alice" ...
+ $ pet_breed      : Factor w/ 6 levels "bird","cat","dog",..: 3 6 3 1 2 3 2 6 4 2 ...
+ $ happiness      : Ord.factor w/ 4 levels "1"&lt;"2"&lt;"3"&lt;"4": 3 4 2 1 3 4 2 3 1 4 ...
+ $ happiness_label: Ord.factor w/ 4 levels "horribly depressed"&lt;..: 3 4 2 1 3 4 2 3 1 4 ...</code></pre>
+</div>
+</div>
+<p>Now we can see that <code>name</code> is a character vector with at least 4 distinct values, <code>pet_breed</code> is a factor with 6 levels, <code>happiness</code> is an ordered factor with 4 levels, and <code>happiness_label</code> is an ordered factor with 4 labeled levels. Some important points to note here:</p>
+<ol type="1">
+<li>The factor variables are actually stored as integers under the hood. The three factor variables, but not the <code>name</code> character variable, include a list of the integer values that correspond to each level of the factor. This is the case for the numeric-looking <code>happiness</code> variable too. “1” isn’t 1, but it <em>is</em> mapped to 1.</li>
+<li>The values of both the <code>name</code> and <code>pet_breed</code> variables are presented in alphabetical order, but only the <code>pet_breed</code> variable is a factor with its values (levels) stored as integers.</li>
+<li>Beyond just being called “Ord.factor” instead of “Factor,” the levels of the ordered factors are in the order we specified, not alphabetical order, made possible by the stored-as-integer thing. They’re not just listed that way, they actually appear with the comparison operators. According to R, not only is “1” &lt; “2”<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>, “horribly depressed” is objectively less than “mostly numb,” which is less than “pretty ok,” which is less than “weirdly great.”</li>
+<li>The string-looking <code>happiness_label</code> variable no longer has its original level names (“1”, “2”, “3”, “4”). Unlike in some other programming languages (e.g., Stata), renaming the levels of a factor variable in R replaces the original names instead of adding new ones. Check out the documentation for <span class="func">?factor</span> to see how the <code>levels</code> and <code>labels</code> arguments work together.</li>
+</ol>
+<p>As complicated as this has already gotten, we’ll get into even more depth about working with factor variables in <span class="quarto-unresolved-ref">?sec-forcats</span> using the <span class="pkg">forcats</span> package.</p>
+</section>
+<section id="dates-date-times" class="level4" data-number="5.2.4.6">
+<h4 data-number="5.2.4.6" class="anchored" data-anchor-id="dates-date-times"><span class="header-section-number">5.2.4.6</span> Dates &amp; Date-Times</h4>
+<p><em>Dates</em> and <em>date-times</em> are special data types in R used to represent points in time. Dates represent calendar dates (year, month, day) without a specific time of day, while date-times – as you might expect – include both the date and the time (hours, minutes, seconds). Date-times are also called <em>POSIX</em> objects in R.</p>
+<p>You can create date and date-time objects using the <span class="func">as.Date()</span> and <span class="func">as.POSIXct()</span> functions, respectively. These values are stored as numeric values representing the number of days (for dates) or seconds (for date-times) since a reference date (January 1, 1970).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>my_date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="st">"1988-06-07"</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>my_datetime <span class="ot">&lt;-</span> <span class="fu">as.POSIXct</span>(<span class="st">"2016-03-19 14:30:00"</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_date)      <span class="co"># "Date"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Date"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_datetime)  <span class="co"># "POSIXct" "POSIXt"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "POSIXct" "POSIXt" </code></pre>
+</div>
+</div>
+<p>You can perform various operations on date and date-time objects, such as calculating the difference between two dates, extracting specific components (like year or month), and formatting them for display.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the difference between two dates</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>your_date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="st">"1991-04-10"</span>)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>your_date <span class="sc">-</span> my_date  <span class="co"># Time difference of 1037 days</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time difference of 1037 days</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>my_date <span class="sc">-</span> your_date <span class="co"># Time difference of -1037 days</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time difference of -1037 days</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>your_datetime <span class="ot">&lt;-</span> <span class="fu">as.POSIXct</span>(<span class="st">"2016-03-18 21:59:00"</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>your_datetime <span class="sc">-</span> my_datetime  <span class="co"># Time difference of -16.51667 hours</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time difference of -16.51667 hours</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>my_datetime <span class="sc">-</span> your_datetime <span class="co"># Time difference of 16.51667 hours</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time difference of 16.51667 hours</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># You can extract the numeric component, but it won't give you the units</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(my_datetime <span class="sc">-</span> your_datetime) <span class="co"># 16.51667 ?? Hours? days? seconds? years?</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 16.51667</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>close_datetime <span class="ot">&lt;-</span> <span class="fu">as.POSIXct</span>(<span class="st">"2016-03-19 14:31:20"</span>)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>my_datetime <span class="sc">-</span> close_datetime  <span class="co"># Time difference of -1.333333 mins</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time difference of -1.333333 mins</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(my_datetime <span class="sc">-</span> close_datetime) <span class="co"># -1.333333 ?? Hours? days? seconds? years?</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -1.333333</code></pre>
+</div>
+</div>
+<p>It shouldn’t be hard to wrap your head around what dates and times are, but they can be surprisingly obnoxious to work with. Daylight savings, time zones, leap years, regional formatting for dates, 12 vs 24 hour clocks…things get complicated fast. Thankfully there are dedicated packages to make working with dates and times easier, including <span class="pkg">chron</span>, <span class="pkg">hms</span>, and the tidyverse’s <span class="pkg">lubridate</span>, which we’ll cover in <span class="quarto-unresolved-ref">?sec-lubridate</span>.</p>
+</section>
+<section id="missing-data-na" class="level4" data-number="5.2.4.7">
+<h4 data-number="5.2.4.7" class="anchored" data-anchor-id="missing-data-na"><span class="header-section-number">5.2.4.7</span> Missing data (NA)</h4>
+<p>In R, <em>missing data</em> points are represented by the special value <code>NA</code>, which stands for “Not Available.” Missing data is not actually a data type, but this is as good a spot as any to mention it.</p>
+<p>You can assign <code>NA</code> to any variable, regardless of its data type:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>missing_numeric <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>missing_character <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>missing_logical <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="co"># etc.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>That means that <code>NA</code> can be part of data structures that can only contain a single data type, like vectors and matrices:</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>numeric_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="cn">NA</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>character_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="cn">NA</span>, <span class="st">"d"</span>, <span class="st">"e"</span>)</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>logical_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">NA</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>matrix_with_na <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="cn">NA</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="cn">NA</span>), <span class="at">nrow =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Here are some things that are <em>not</em> missing data:</p>
+<ol type="1">
+<li>The string <code>"NA"</code></li>
+<li>The empty string <code>""</code></li>
+<li>Logical <code>FALSE</code></li>
+<li>Numeric <code>0</code></li>
+<li><code>NULL</code>, which is a special object representing any undefined or non-existent value</li>
+<li>Anything that other programming languages use to represent missing data other than <code>NA</code><a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>:
+<ul>
+<li>Python: <code>None</code></li>
+<li>SQL: <code>NULL</code></li>
+<li>Stata: <code>.</code></li>
+<li>SPSS: nothing/blank</li>
+<li>Excel: nothing/blank or <code>#N/A</code></li>
+<li>MATLAB: <code>NaN</code></li>
+</ul></li>
+</ol>
+<p>There’s also <code>NaN</code> (Not a Number), which is a special numeric value representing undefined numeric values (like dividing by 0). R will handle <code>NA</code> and <code>NaN</code> similarly in many contexts, but they’re not equivalent.</p>
+<p>You can check whether a value is <code>NA</code> using the <span class="func">is.na()</span> function, which returns a logical value (<code>TRUE</code> or <code>FALSE</code>):</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(missing_numeric)      <span class="co"># TRUE</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(missing_character)    <span class="co"># TRUE</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(missing_logical)      <span class="co"># TRUE</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(<span class="cn">NA</span>)                   <span class="co"># TRUE</span></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(<span class="st">"NA"</span>)                 <span class="co"># FALSE</span></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(<span class="st">""</span>)                   <span class="co"># FALSE</span></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(<span class="cn">NaN</span>)                  <span class="co"># TRUE -- don't think too much about it...</span></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(<span class="cn">NULL</span>)                 <span class="co"># logical(0)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>When you read in any new data, check that missing data is represented as <code>NA</code> and not something else. R will often, <em>but not always</em>, automatically convert other representations of missing data to <code>NA</code> when importing data. It’s particularly unreliable when the data being read in has anything non-tabular squashed into a tabular format, like comments, titles, and metadata.</p>
+<p>If you have missing data represented in a different way, you can convert it to <code>NA</code> using functions like <span class="func">na_if()</span> from the <span class="pkg">dplyr</span> package or <span class="func">replace()</span> from base R.</p>
+</section>
+</section>
+<section id="operators" class="level3" data-number="5.2.5">
+<h3 data-number="5.2.5" class="anchored" data-anchor-id="operators"><span class="header-section-number">5.2.5</span> Operators</h3>
+<p><em>Operators</em> are symbols that tell R to perform specific operations on one or more values or variables. These are usually separated into 3 categories: arithmetic, comparison, and logical. There are also a handful of others I’m lumping together for simplicity.</p>
+<section id="arithmetic" class="level4" data-number="5.2.5.1">
+<h4 data-number="5.2.5.1" class="anchored" data-anchor-id="arithmetic"><span class="header-section-number">5.2.5.1</span> Arithmetic</h4>
+<p><em>Arithmetic</em> operators are exactly what you think they are: they do math. Most or all of these should look very familiar, since they are either similar or identical to the basic math operators you learned in math class.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Operator</th>
+<th>Description</th>
+<th>Example</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>+</code></td>
+<td>Addition</td>
+<td><code>3 + 5</code></td>
+<td>8</td>
+</tr>
+<tr class="even">
+<td><code>-</code></td>
+<td>Subtraction</td>
+<td><code>10 - 4</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>*</code></td>
+<td>Multiplication</td>
+<td><code>6 * 7</code></td>
+<td>42</td>
+</tr>
+<tr class="even">
+<td><code>/</code></td>
+<td>Division</td>
+<td><code>20 / 4</code></td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td><code>^</code></td>
+<td>Exponentiation (power)</td>
+<td><code>2 ^ 3</code></td>
+<td>8</td>
+</tr>
+<tr class="even">
+<td><code>%%</code></td>
+<td>Modulo (remainder of division)</td>
+<td><code>10 %% 3</code></td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>The one operator from this group that might not be familiar is modulo (aka modulus or just “mod”). The result of the modulo operation is just the remainder left over after dividing one number by another.</p>
+</section>
+<section id="sec-comparison-operators" class="level4" data-number="5.2.5.2">
+<h4 data-number="5.2.5.2" class="anchored" data-anchor-id="sec-comparison-operators"><span class="header-section-number">5.2.5.2</span> Comparison</h4>
+<p><em>Comparison</em> or <em>relational</em> operators compare two values or variables and return a logical value (<code>TRUE</code> or <code>FALSE</code>) based on the result of the comparison. These should also be familiar from math class.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Operator</th>
+<th>Description</th>
+<th>Example</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>==</code></td>
+<td>Equal to</td>
+<td><code>5 == 5</code></td>
+<td>TRUE</td>
+</tr>
+<tr class="even">
+<td><code>!=</code></td>
+<td>Not equal to</td>
+<td><code>5 != 3</code></td>
+<td>TRUE</td>
+</tr>
+<tr class="odd">
+<td><code>&gt;</code></td>
+<td>Greater than</td>
+<td><code>7 &gt; 4</code></td>
+<td>TRUE</td>
+</tr>
+<tr class="even">
+<td><code>&lt;</code></td>
+<td>Less than</td>
+<td><code>3 &lt; 8</code></td>
+<td>TRUE</td>
+</tr>
+<tr class="odd">
+<td><code>&gt;=</code></td>
+<td>Greater than or equal to</td>
+<td><code>6 &gt;= 6</code></td>
+<td>TRUE</td>
+</tr>
+<tr class="even">
+<td><code>&lt;=</code></td>
+<td>Less than or equal to</td>
+<td><code>2 &lt;= 5</code></td>
+<td>TRUE</td>
+</tr>
+</tbody>
+</table>
+<p>Two quick things to point out with these:</p>
+<ol type="1">
+<li>The equal sign is <code>==</code>, not <code>=</code>. A single equal sign is an assignment operator, similar to <code>&lt;-</code>. More on that below.</li>
+<li>The not equal sign is <code>!=</code>, which is usually represented with “=/=” or “≠” outside of programming.</li>
+</ol>
+</section>
+<section id="logical-1" class="level4" data-number="5.2.5.3">
+<h4 data-number="5.2.5.3" class="anchored" data-anchor-id="logical-1"><span class="header-section-number">5.2.5.3</span> Logical</h4>
+<p><em>Logical</em> operators combine or modify logical values (<code>TRUE</code> or <code>FALSE</code>). There are 3 other logical operators:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 30%">
+<col style="width: 23%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Operator</th>
+<th>Description</th>
+<th>Example</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>&amp;</code></td>
+<td>“and”: both sides of the operators evaluate to <code>TRUE</code></td>
+<td><code>TRUE &amp; FALSE</code></td>
+<td>FALSE</td>
+</tr>
+<tr class="even">
+<td><code>|</code></td>
+<td>“or”: at least one side of the operator evaluates to <code>TRUE</code></td>
+<td><code>TRUE | FALSE</code></td>
+<td>TRUE</td>
+</tr>
+<tr class="odd">
+<td><code>!</code></td>
+<td>“not”: the opposite of something’s logical evaluation</td>
+<td><code>!TRUE</code></td>
+<td>FALSE</td>
+</tr>
+</tbody>
+</table>
+<p>It helps to think of the <code>!</code> as the word “not”: <code>!=</code> is “not equal to”. <code>!TRUE</code> is <code>FALSE</code>. <code>is.na(x)</code> means “is x missing?” (true or false), and <code>!is.na(x)</code> means “is x <em>not</em> missing?” (true or false, the opposite of <code>is.na(x)</code>).</p>
+<p>The <code>&amp;</code> and <code>|</code> operators come in two flavors: single or (<code>&amp;</code> and <code>|</code>) and double (<code>&amp;&amp;</code> and <code>||</code>). The oversimplified difference is that single operators work element-wise on vectors, while double operators “short-circuit” and only <del>evaluate the first element of each vector</del> work correctly with scalars. The behavior of short-circuit operators in R has changed, leaving much of the documentation and support resources out of date. Confusing at best and often just flat out incorrect. <a href="https://rpubs.com/nturaga/single-v-double-logical-operators-R">Dig into this difference</a> if you want or need to, but for most purposes, you can just use the single operators (<code>&amp;</code> and <code>|</code>).<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> Be sure to look at resources for R 4.3.0 or later.</p>
+</section>
+<section id="special-and-miscellaneous" class="level4" data-number="5.2.5.4">
+<h4 data-number="5.2.5.4" class="anchored" data-anchor-id="special-and-miscellaneous"><span class="header-section-number">5.2.5.4</span> “Special” and miscellaneous</h4>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 30%">
+<col style="width: 23%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Operator</th>
+<th>Description</th>
+<th>Example</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>&lt;-</code> or <code>=</code></td>
+<td>Assignment operator</td>
+<td><code>x &lt;- 5</code> or <code>x = 5</code></td>
+<td>Assigns the value <code>5</code> to the variable <code>x</code></td>
+</tr>
+<tr class="even">
+<td><code>:</code></td>
+<td>Create a sequence of integers</td>
+<td><code>1:5</code></td>
+<td><code>c(1, 2, 3, 4, 5)</code></td>
+</tr>
+<tr class="odd">
+<td><code>[ ]</code></td>
+<td>Subset elements of a vector, list, or data frame by position or name</td>
+<td><code>list(first = 1, second = 2)[2]</code></td>
+<td><code>&gt; $second &gt; [1] 2</code></td>
+</tr>
+<tr class="even">
+<td><code>[[ ]]</code></td>
+<td>Extract a single element from a list by position or name</td>
+<td><code>list(first = 1, second = 2)[[2]]</code></td>
+<td><code>2</code></td>
+</tr>
+<tr class="odd">
+<td><code>$</code></td>
+<td>Extract a single element from a list or data frame by name</td>
+<td><code>list(first = 1, second = 2)$second</code></td>
+<td><code>2</code></td>
+</tr>
+<tr class="even">
+<td><code>|&gt;</code> or <code>%&gt;%</code></td>
+<td>Pipe operator to pass the output of one function as the input to another</td>
+<td><code>data |&gt; filter(condition)</code></td>
+<td>Passes <code>data</code> as the first argument to <code>filter()</code></td>
+</tr>
+</tbody>
+</table>
+<p>We’ll talk more about assignment and indexing in <span class="quarto-unresolved-ref">?sec-r-programming</span>. <strong>WYNTKN:</strong></p>
+<ol type="1">
+<li><code>&lt;-</code> takes a value on the right and assigns it to a variable name on the left. Don’t use <code>=</code> for assignment outside of functions.</li>
+<li><code>whatever[x,y]</code> gets you the value in the xth row and yth column of a data frame or matrix. <code>whatever[x]</code> gets you the xth element of a vector or list.</li>
+</ol>
+</section>
+<section id="infix" class="level4" data-number="5.2.5.5">
+<h4 data-number="5.2.5.5" class="anchored" data-anchor-id="infix"><span class="header-section-number">5.2.5.5</span> Infix</h4>
+<p><em>Infix</em> functions are not operators. They are functions that take commonly used functions and allow you to use a special syntax to call them. Typically, you call a function by the name and a list of arguments contained in parentheses: <code>funcname(arg1, arg2, ...)</code>. Infix functions let you call a function by placing the function name between the arguments, like <code>arg1 funcname arg2</code>, the same way that operators work.</p>
+<p>You can recognize these by the percent signs (%) surrounding the “operator” name. Most shortcuts like this are <em>not</em> part of base R, and some packages will have versions of these shortcuts that overlap or conflict with each other, so be very careful to stay aware of where each one is coming from.</p>
+<p>Here are just a few examples:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 22%">
+<col style="width: 19%">
+<col style="width: 19%">
+<col style="width: 19%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>“Operator”</th>
+<th>Description</th>
+<th>Example</th>
+<th>Output</th>
+<th>Package(s)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>%in%</code></td>
+<td>Check if elements of one vector are present in another vector</td>
+<td><code>3 %in% c(1, 2, 3, 4, 5)</code></td>
+<td>TRUE</td>
+<td>base R</td>
+</tr>
+<tr class="even">
+<td><code>%like%</code></td>
+<td>Check if elements of one character vector are present in another character vector using pattern matching (similar to SQL LIKE)</td>
+<td><code>"cat" %like% c("cat", "dog", "fish")</code></td>
+<td><code>TRUE</code></td>
+<td><span class="pkg">data.table</span></td>
+</tr>
+<tr class="odd">
+<td><code>%&gt;%</code></td>
+<td>Pipe operator to pass the output of one function as the input to another</td>
+<td><code>data %&gt;% filter(condition)</code></td>
+<td>Passes <code>data</code> as the first argument to <code>filter()</code></td>
+<td><span class="pkg">magrittr</span>, <span class="pkg">dplyr</span>, <span class="pkg">tidyverse</span></td>
+</tr>
+<tr class="even">
+<td><code>%&lt;&gt;%</code></td>
+<td>Compound assignment pipe operator that updates the left-hand side with the result of the right-hand side operation</td>
+<td><code>data %&lt;&gt;% filter(condition)</code></td>
+<td>Updates <code>data</code> with the result of <code>filter(data, condition)</code></td>
+<td><span class="pkg">magrittr</span></td>
+</tr>
+</tbody>
+</table>
+<p>Again, these are <em>functions</em>, not operators. Learn more about infix functions <a href="https://adv-r.hadley.nz/functions.html#infix-functions">here</a>.</p>
+</section>
+</section>
+<section id="comments" class="level3" data-number="5.2.6">
+<h3 data-number="5.2.6" class="anchored" data-anchor-id="comments"><span class="header-section-number">5.2.6</span> Comments</h3>
+<p>Comments are segments of text ignored by R when it runs your code. The pound sign <code>#</code> tells R to ignore anything that follows on the same line.</p>
+<p>Use comments often to add plain-English, collaborator-friendly explanations for what your code does. You can temporarily comment out code if 1) you think you may delete it later or 2) there will be some cases where you want R to ignore the code (leave commented) but other times you want it to run (uncomment).</p>
+<p>Add long comments by starting the line with 1 or more #. For blocks of comments that span multiple lines, start every line with a #.</p>
+<p>Put a # before code to temporarily “comment it out.” This code will be ignored by R until you remove the #.</p>
+<p>Comments can begin in the middle of a line. R will run everything before the # and ignore everything that follows.</p>
+</section>
+</section>
+<section id="r-data-structures" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="r-data-structures"><span class="header-section-number">5.3</span> R data structures</h2>
+<section id="vectors" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="vectors"><span class="header-section-number">5.3.1</span> Vectors</h3>
+<p>multiple scalar objects (values) stored in a particular order; values can be any data type including NA</p>
+</section>
+<section id="lists" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="lists"><span class="header-section-number">5.3.2</span> Lists</h3>
+</section>
+<section id="matrices" class="level3" data-number="5.3.3">
+<h3 data-number="5.3.3" class="anchored" data-anchor-id="matrices"><span class="header-section-number">5.3.3</span> Matrices</h3>
+<p>multiple vector objects of a single data type stored in a particular order; combine vectors as columns (cbind()) or rows (rbind()), or distribute a vector across named rows and columns (matrix())</p>
+</section>
+<section id="data-frames" class="level3" data-number="5.3.4">
+<h3 data-number="5.3.4" class="anchored" data-anchor-id="data-frames"><span class="header-section-number">5.3.4</span> Data frames</h3>
+<p>Data frames are lists of equal-length vectors: data.frame() The heart &lt;3 of R Vectors can use different data types Values within each vector (column) are the same data type Technically a list, but takes a tabular format (like a matrix) Tibbles are simplified data frames: tibble() Used in the tidyverse (more later) For our (and most) purposes, can be treated interchangeably with data frames</p>
+</section>
+<section id="tibbles" class="level3" data-number="5.3.5">
+<h3 data-number="5.3.5" class="anchored" data-anchor-id="tibbles"><span class="header-section-number">5.3.5</span> Tibbles</h3>
+</section>
+</section>
+<section id="learn-more" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="learn-more"><span class="header-section-number">5.4</span> Learn More</h2>
+<!-- Citations to add -->
+<!-- white_2009_using -->
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>I study language. I’m allowed to talk nonsense like this.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Mixing up the words of a sentence makes it mean something else or nothing at all.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>And I assure you, it’s a lot more than a single Junimo plush.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>If you run <code>class(class(3.14))</code>, it will return <code>"character"</code>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>As intuitive as it may seem, this needn’t be the case, since <code>"1"</code> is not the same as the integer <code>1</code>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>I have primarily used R for many years and am relying on secondary sources for some of this info. If you have experience with other languages and see any errors here, please let me know!<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>I’m pretty sure that in my years of using R, I have <em>never</em> needed to explicitly use the double and/or.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/git-github.html" class="pagination-link" aria-label="Git &amp; GitHub">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Git &amp; GitHub</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/packages.html" class="pagination-link" aria-label="Packages">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Packages</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

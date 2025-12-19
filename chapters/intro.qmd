@@ -1,0 +1,79 @@
+---
+title: Introduction to D2M-R - TEST EDIT 2
+---
+
+
+## PSYC 30550 D2MR - Overview
+
+### The class itself - link to course page
+
+### Assessment structure
+    
+## D2M-R Workflow
+
+## This book
+
+### The goals
+
+### How to use it
+
+If you're coming at this book as a total beginner, it's going to get overwhelming at times.
+This is just the nature of how programming works, since everything is deeply interconnected.
+
+Think about the difference between learning your native language as a baby and learning an additional language in school.
+With your second language, you already have a lot of the foundational concepts in place.
+You can map new words to old word, new structures to old structures.
+You already have clear communicative goals, you know how to tell whether your attempts at communication are successful, and you can interpret feedback and corrections when something goes wrong.
+
+When you learned your first language, you just...did it.
+At some baby-level, you had things you wanted to communicate, but you didn't have the words or grammar to do it.
+You didn't even have a non-language internal model of the message.
+At some point in acquisition, you recognize in your baby way that there is a system that can help you out, and you pick up patterns and rules from the sea of incomprehensible input around you.
+
+If you have never programmed before, you are the baby here. 
+(No shade to either you or babies. Language learning is extremely wild and cool.)
+You're going to need to give yourself some grace.
+Pick up on the patterns and rules where you can, knowing that everything is here to come back to when you're able to build on your existing knowledge.
+
+In an effort to help you out, throughout this book I've included some simplistic points of *what you need to know now* based on what I know is coming up in the course.
+When you see **WYNTKN** (What You Need To Know Now), know that stuff now before you move on.
+Bear in mind that often those points will be presented in an oversimplified way that doesn't tell the whole story, but that's kind of the point.
+
+On the other end of the spectrum, you may be coming at this course with some -- or even *a lot* -- of experience with programming in Python, running stats in Stata or SPSS, using git and GitHub for version control, etc.
+You may even be a seasoned R programmer who is looking to brush up on some skills or fill in gaps.
+In D2M-R, you'll be an invaluable support for your classmates (which is part of your grade).
+You'll be able to skim the basics and focus on the parts that are new to you.
+If you know clearly what your goals are, you might have some things you want or need to know that we won't cover in this introductory course.
+At the end of (most) sections, I've included a *Learn More* section with links to resources for further reading that should help you independently go further.
+If there is a topic you want to learn more about that isn't covered here, please reach out to me and I can help you find resources and add them to the book.
+
+
+
+
+### How to contribute
+
+### What this course *is not*
+
+1. **Mac/Windows bilingual.** Because the vast majority of students use Macs (as do I), some details are Mac-specific. Translating to Linux is going to be pretty trivial for anyone who is already a Linux user.
+Translating to Windows isn't always immediately obvious, but it is well-documented and should be pretty straightforward with common sense and minimal googling.
+2. **Comprehensive.** This is an introductory course. We're going to skip a lot of details and edge cases in the interest of getting you up and running as soon as possible. Some things that do make it in will be oversimplified. If you want to go deeper, check out the *Learn More* sections in each chapter, as well as the [Resources](#sec-resources) page.
+3. **Infallible and beyond reproach.** There will be mistakes, and there will be things that could be explained better. Keep in mind that I am not a computer scientist, and my work rarely requires deep, theoretical programming knowledge. What I *am* is an academic and an educator, which means I love an opportunity to learn something new. In my classrooms I teach that the most important skill to have in academia^[Or, I'd argue, in life.] is learning to say "I don't know" and "I was wrong." There are times where I learned something incorrectly, where my knowledge is out of date, or where the best way I know to do something is absurdly overcomplicated. If you see something that seems wrong, please reach out to me so I can fix it. You're doing me a personal favor by teaching me something new! Even if you have misunderstood and I'm "right," I will learn that I have explained it poorly and figure out a better way to do so.
+4. **A statistics or experimental design text.** We'll cover some basic descriptive stats in the first half of the course. In the second half, we'll cover some of the inferential stats that are most commonly used in psychology. When I say "cover," I mean we're going to give you the tools to execute these analyses in R. We will touch on what kinds of scenarios social scientists use these analyses in, but we will not go into the theory or assumptions behind them. It is your job to learn how to make good decisions about which analyses to use when, and how to thoughtfully and productively interpret your results.
+5. **A programming text.** I mean, yes, obviously it teaches programming, but it's extremely applied. This is a text about how to do what you need to do with R as a critical tool. Hopefully many of the skills you come away with will be transferable to other programming languages, but this isn't going to teach you how to program in a language-agnostic way. 
+
+
+
+## Getting Started/Setting up 
+<!-- (in the form of walking through a dummy repo) -->
+
+### Download and install R and RStudio 
+
+### Get familiar with RStudio
+
+### R and Quarto Notebooks
+
+### Get Git
+
+### Connect RStudio to GitHub
+
+### (Optional) Set up Copilot in RStudio

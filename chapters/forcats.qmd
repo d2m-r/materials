@@ -1,0 +1,63 @@
+---
+title: "forcats"
+format: html
+---
+
+<!-- Moved from r-language-basics.qmd. Putting it here as a starter for a refresher on factors. Still deciding how to balance what is introduced earlier and what to hold off on until now.-->
+
+*Factors* variables represent discrete groups or levels.
+This is the word R uses for what you may prefer to call categorical, nominal, ordinal, or discrete variables (among others).
+
+Factor variables may not be immediately distinguishable from character variables when you look over your data, but they function very differently.
+
+A character variable is a string of text, and all strings are treated as unique values -- even if they are identical.
+While R can compare two strings and determine whether they are identical:
+
+```r
+is_same <- "happy family" == "happy family"  # TRUE
+is_different <- "unhappy family" == "Unhappy Family"  # FALSE
+```
+
+it won't recognize that identical strings are *meaningfully* the same thing.
+
+Let's say you have a survey that includes asking for respondents' first names and favorite video games.
+A lot of very cool people fill out the survey, so the most common name ends up being `Natalie` and the most common video game is obviously `Stardew Valley`.
+
+Although the two variables look similar in structure on the surface given the distribution of responses, only the favorite video game variable is categorical.
+In a simple analysis, you might reasonably want to see the distribution of favorite video games:
+
+```r
+first_names <- c("Natalie", "Lucas", "Natalie", "Jenny", "Middy", "Natalie", "Natalie", "Gabriel")
+favorite_games <- c("Stardew Valley", "Hades", "Stardew Valley", "Celeste", "Stardew Valley", "Hades", "Stardew Valley", "Minecraft")
+
+# create a data frame
+survey_data <- data.frame(
+  first_name = first_names,
+  favorite_game = favorite_games
+)
+
+# view the distribution of favorite games
+table(survey_data$favorite_game)
+
+# create a simple plot of favorite games using ggplot2
+library(ggplot2)
+ggplot(survey_data, aes(x = favorite_game)) +
+  geom_bar() +
+  labs(title = "Favorite Games", x = "Game", y = "Count")
+
+```
+
+You could also examine how first names are distributed, since in principle these are also discrete groups:
+
+```r
+# view the distribution of first names
+table(survey_data$first_name)
+
+# create a simple plot of first names using ggplot2
+# library(ggplot2)  # already loaded above
+ggplot(survey_data, aes(x = first_name)) +
+  geom_bar() +
+  labs(title = "First Names", x = "Name", y = "Count")
+```
+
+Moderately interesting if you notice you coincidentally had a lot of participants with the same name, but you'd have to some work to come up with a theoretically motivated research question that required grouping first names here.

@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; Solving (Your Own) Problems – From Data to Manuscript in R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/rstudio.html" rel="next">
+<link href="../chapters/intro.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b63e124d7351deed0577b7053fe1fba1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/solving-problems.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Solving (Your Own) Problems</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">From Data to Manuscript in R</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to D2M-R - TEST EDIT 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/solving-problems.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Solving (Your Own) Problems</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/rstudio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">RStudio Essentials</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/git-github.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Git &amp; GitHub</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/r-language-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">R Language Basics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Packages</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/r-programming.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Intro to Programming in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/tidyverse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Welcome to the Tidyverse!</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/dplyr-tidyr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">dplyr-tidyr</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/stringr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Strings and Character Data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/forcats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">forcats</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/lubridate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">lubridate</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/basics-viz-stats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Basic Visualization &amp; Summary Statistics</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">3</span> Overview</a></li>
+  <li><a href="#best-practices" id="toc-best-practices" class="nav-link" data-scroll-target="#best-practices"><span class="header-section-number">4</span> Best practices</a>
+  <ul class="collapse">
+  <li><a href="#standardized" id="toc-standardized" class="nav-link" data-scroll-target="#standardized"><span class="header-section-number">4.1</span> Standardized</a>
+  <ul class="collapse">
+  <li><a href="#style-guides" id="toc-style-guides" class="nav-link" data-scroll-target="#style-guides"><span class="header-section-number">4.1.1</span> Style guides</a></li>
+  <li><a href="#internal-consistency" id="toc-internal-consistency" class="nav-link" data-scroll-target="#internal-consistency"><span class="header-section-number">4.1.2</span> Internal consistency</a></li>
+  </ul></li>
+  <li><a href="#example-my-style-guide-and-practices" id="toc-example-my-style-guide-and-practices" class="nav-link" data-scroll-target="#example-my-style-guide-and-practices"><span class="header-section-number">4.2</span> Example: My style guide and practices</a></li>
+  <li><a href="#intelligible" id="toc-intelligible" class="nav-link" data-scroll-target="#intelligible"><span class="header-section-number">4.3</span> Intelligible</a>
+  <ul class="collapse">
+  <li><a href="#informative-comments" id="toc-informative-comments" class="nav-link" data-scroll-target="#informative-comments"><span class="header-section-number">4.3.1</span> Informative comments</a></li>
+  <li><a href="#meaningful-naming" id="toc-meaningful-naming" class="nav-link" data-scroll-target="#meaningful-naming"><span class="header-section-number">4.3.2</span> Meaningful naming</a></li>
+  </ul></li>
+  <li><a href="#maintainable" id="toc-maintainable" class="nav-link" data-scroll-target="#maintainable"><span class="header-section-number">4.4</span> Maintainable</a>
+  <ul class="collapse">
+  <li><a href="#documentation" id="toc-documentation" class="nav-link" data-scroll-target="#documentation"><span class="header-section-number">4.4.1</span> Documentation</a></li>
+  <li><a href="#lifecycles" id="toc-lifecycles" class="nav-link" data-scroll-target="#lifecycles"><span class="header-section-number">4.4.2</span> Lifecycles</a></li>
+  <li><a href="#dry-programming" id="toc-dry-programming" class="nav-link" data-scroll-target="#dry-programming"><span class="header-section-number">4.4.3</span> DRY programming</a></li>
+  <li><a href="#abstracted-coding" id="toc-abstracted-coding" class="nav-link" data-scroll-target="#abstracted-coding"><span class="header-section-number">4.4.4</span> Abstracted coding</a></li>
+  </ul></li>
+  <li><a href="#contextualized" id="toc-contextualized" class="nav-link" data-scroll-target="#contextualized"><span class="header-section-number">4.5</span> Contextualized</a>
+  <ul class="collapse">
+  <li><a href="#programming-community-rules" id="toc-programming-community-rules" class="nav-link" data-scroll-target="#programming-community-rules"><span class="header-section-number">4.5.1</span> Programming community “rules”</a></li>
+  <li><a href="#project-priorities" id="toc-project-priorities" class="nav-link" data-scroll-target="#project-priorities"><span class="header-section-number">4.5.2</span> Project priorities</a></li>
+  </ul></li>
+  <li><a href="#other" id="toc-other" class="nav-link" data-scroll-target="#other"><span class="header-section-number">4.6</span> Other</a>
+  <ul class="collapse">
+  <li><a href="#notebooks-quarto-and-markdown" id="toc-notebooks-quarto-and-markdown" class="nav-link" data-scroll-target="#notebooks-quarto-and-markdown"><span class="header-section-number">4.6.1</span> Notebooks, Quarto, and Markdown</a></li>
+  <li><a href="#github-collaboration" id="toc-github-collaboration" class="nav-link" data-scroll-target="#github-collaboration"><span class="header-section-number">4.6.2</span> GitHub &amp; Collaboration</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#debugging-troubleshooting" id="toc-debugging-troubleshooting" class="nav-link" data-scroll-target="#debugging-troubleshooting"><span class="header-section-number">5</span> Debugging &amp; Troubleshooting</a>
+  <ul class="collapse">
+  <li><a href="#documentation-1" id="toc-documentation-1" class="nav-link" data-scroll-target="#documentation-1"><span class="header-section-number">5.1</span> Documentation</a>
+  <ul class="collapse">
+  <li><a href="#helplookup-functions" id="toc-helplookup-functions" class="nav-link" data-scroll-target="#helplookup-functions"><span class="header-section-number">5.1.1</span> Help/lookup functions</a></li>
+  <li><a href="#function-documentation" id="toc-function-documentation" class="nav-link" data-scroll-target="#function-documentation"><span class="header-section-number">5.1.2</span> Function documentation</a></li>
+  <li><a href="#package-documentation" id="toc-package-documentation" class="nav-link" data-scroll-target="#package-documentation"><span class="header-section-number">5.1.3</span> Package documentation</a></li>
+  <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources"><span class="header-section-number">5.1.4</span> Resources</a></li>
+  </ul></li>
+  <li><a href="#solving-your-own-problems" id="toc-solving-your-own-problems" class="nav-link" data-scroll-target="#solving-your-own-problems"><span class="header-section-number">5.2</span> Solving your own problems</a>
+  <ul class="collapse">
+  <li><a href="#error-messages" id="toc-error-messages" class="nav-link" data-scroll-target="#error-messages"><span class="header-section-number">5.2.1</span> Error messages</a></li>
+  <li><a href="#garbage-in-garbage-out-and-other-tropes" id="toc-garbage-in-garbage-out-and-other-tropes" class="nav-link" data-scroll-target="#garbage-in-garbage-out-and-other-tropes"><span class="header-section-number">5.2.2</span> Garbage in, garbage out (and other tropes)</a></li>
+  <li><a href="#line-by-line-debugging" id="toc-line-by-line-debugging" class="nav-link" data-scroll-target="#line-by-line-debugging"><span class="header-section-number">5.2.3</span> Line-by-line debugging</a></li>
+  <li><a href="#rubber-ducking" id="toc-rubber-ducking" class="nav-link" data-scroll-target="#rubber-ducking"><span class="header-section-number">5.2.4</span> Rubber ducking</a></li>
+  </ul></li>
+  <li><a href="#ask-the-internet" id="toc-ask-the-internet" class="nav-link" data-scroll-target="#ask-the-internet"><span class="header-section-number">5.3</span> Ask the internet</a>
+  <ul class="collapse">
+  <li><a href="#start-strong---asking-good-questions" id="toc-start-strong---asking-good-questions" class="nav-link" data-scroll-target="#start-strong---asking-good-questions"><span class="header-section-number">5.3.1</span> Start strong - asking good questions</a></li>
+  <li><a href="#crowdsource" id="toc-crowdsource" class="nav-link" data-scroll-target="#crowdsource"><span class="header-section-number">5.3.2</span> Crowdsource</a></li>
+  <li><a href="#use-ai-constructively" id="toc-use-ai-constructively" class="nav-link" data-scroll-target="#use-ai-constructively"><span class="header-section-number">5.3.3</span> Use AI constructively</a></li>
+  </ul></li>
+  <li><a href="#ask-humans-for-classrooms-and-group-learning" id="toc-ask-humans-for-classrooms-and-group-learning" class="nav-link" data-scroll-target="#ask-humans-for-classrooms-and-group-learning"><span class="header-section-number">5.4</span> Ask humans (for classrooms and group learning)</a>
+  <ul class="collapse">
+  <li><a href="#ask-your-classmates" id="toc-ask-your-classmates" class="nav-link" data-scroll-target="#ask-your-classmates"><span class="header-section-number">5.4.1</span> Ask your classmates</a></li>
+  <li><a href="#use-slack" id="toc-use-slack" class="nav-link" data-scroll-target="#use-slack"><span class="header-section-number">5.4.2</span> Use Slack</a></li>
+  <li><a href="#ask-your-instructor-tas" id="toc-ask-your-instructor-tas" class="nav-link" data-scroll-target="#ask-your-instructor-tas"><span class="header-section-number">5.4.3</span> Ask your instructor &amp; TAs</a></li>
+  <li><a href="#the-d2m-r-troubleshooting-process" id="toc-the-d2m-r-troubleshooting-process" class="nav-link" data-scroll-target="#the-d2m-r-troubleshooting-process"><span class="header-section-number">5.4.4</span> The D2M-R troubleshooting process</a></li>
+  </ul></li>
+  <li><a href="#starting-from-nothing" id="toc-starting-from-nothing" class="nav-link" data-scroll-target="#starting-from-nothing"><span class="header-section-number">5.5</span> Starting from “Nothing”</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">5.6</span> Exercise(s?)</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Solving (Your Own) Problems</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="overview" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Overview</h1>
+<p><em>Why is this its own chapter?</em></p>
+</section>
+<section id="best-practices" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Best practices</h1>
+<p>I have to start with a caveat:</p>
+<p>This section is intended to be a starting place for students new(ish) to R programming, specifically students in D2M-R who have to meet the expectations of the person who is writing this. Many pieces of advice on this page are generalizable to other programming languages; others are R-specific. I’ve tried to keep things limited to minimally controversial ideas, but you’re allowed to disagree with me here.</p>
+<p>Whenever you read about best practices, there is really only one true rule: <strong>The best code is the code that works.</strong></p>
+<p>Aiming to have code that is (1) standardized, (2) intelligible, (3) maintainable, and (4) contextualized should help you create code that works. On top of working, it should hopefully also help you operate in a world of collaborative and open quantitative research. It should put you in the best place for effective troubleshooting, for reproducing analyses, and for returning to your code months or years from now. But ultimately, these are guidelines that are intended to be <em>helpful</em>. Try to incorporate these practices into your coding workflow, but be patient and forgiving. If you have to choose between code that’s pretty and code that works, choose code that works every time.</p>
+<section id="standardized" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="standardized"><span class="header-section-number">4.1</span> Standardized</h2>
+<p>R is a pretty forgiving language. It’s whitespace insensitive (in case you don’t already believe the <a href="https://www.youtube.com/watch?v=oRva7UxGQDw">tabs vs spaces debate</a> is irrelevant) and has relatively few forbidden characters or “arbitrary” syntax constraints. If you break a rule you get an error, which is a lot nicer than if it were to just run anyway and produce mysterious, inexplicable results.</p>
+<p>This has a lot of advantages, but one downside is that your code can get extremely messy before things actually start to break. You can write perfectly functional R code that is utterly indecipherable to humans, including you-the-coder. Standardizing styling decisions helps keep things organized and human-friendly.</p>
+<section id="style-guides" class="level3" data-number="4.1.1">
+<h3 data-number="4.1.1" class="anchored" data-anchor-id="style-guides"><span class="header-section-number">4.1.1</span> Style guides</h3>
+<p>Coding style guides serve the same functions as publication style guides, like AP Style or the New York Times manual of style. They demand (or at least encourage) consistency, which should make things more comprehensible for you and your “readers” (collaborators).</p>
+<p>An effective and comprehensive style guide for R programming will establish conventions for naming objects and functions, handling whitespace and punctuation, and preferred syntax or representations (e.g., a rule to use the <code>&lt;-</code> assignment operator rather than <code>=</code>). It will also usually contain guidelines for otherwise highly subjective things like how to structure comments, how verbose function definitions should be, how to clearly construct error messages, and the necessary elements and formatting of documentation.</p>
+<p>The <a href="https://style.tidyverse.org/index.html">tidyverse style guide</a> is an excellent, comprehensive, and widely used style guide for R. If you don’t already have a preferred style guide, I suggest starting here.</p>
+</section>
+<section id="internal-consistency" class="level3" data-number="4.1.2">
+<h3 data-number="4.1.2" class="anchored" data-anchor-id="internal-consistency"><span class="header-section-number">4.1.2</span> Internal consistency</h3>
+<p>The best style guide is the one you can stick to. So long as (1) it functions within your environment (no matter how much you’d like to begin your variable names with numerals, it’s not a style option) and (2) it’s comprehensible (for you totally and to others generally), the internal consistency is what really matters.</p>
+<p>Pay attention to how you manage to adhere to your style as you code. Are there guidelines you can’t seem to remember or always mess up? Are there things that just confuse you? Do you look back on your code that perfectly follows your style and forget why you styled certain things the way you did? These are most likely to be the breaking points for internal consistency. If some aspect of style isn’t helping your code be <em>more</em> comprehensible and <em>more</em> efficient to review and maintain, it’s counterproductive and you should change to something that will be more helpful.</p>
+<p>For example, the tidyverse style guide recommends using underscores when naming all objects. I find that using underscores for everything leads me to mix up different kinds of objects. Is <code>child_gesture</code> the name of the dataframe with gesture-level coding or the column in that dataframe that contains frequency of children’s gestures? Is <code>shrug_bar_plot</code> the modified dataframe that is piped into a ggplot object, the ggplot object itself, the chunk name where the plot is defined, the chunk where it’s rendered, or something else?</p>
+<p>It would be great if I was good enough at giving objects informative names (see below!) to not confuse myself with this style, but realistically it doesn’t work for me. Instead of using underscore separators for everything, I opt to use periods for “complex” objects like dataframes, underscores for “simple” or “internal” objects like variables, camel-case for “publishable” objects like plots, and hyphens for “containers” like chunk and file names. Some people would find my system infuriating for any number of reasons, but over time I’ve found it works for me. Since I can be consistent with it, it really speeds up coding and debugging, and it doesn’t actively impede comprehensibility for others. That’s ultimately what matters.</p>
+<p>You can view the custom style guide I (usually) follow <span id="natalie-style-guide">here</span>. Remember this is just what I have found works well for me. It’s not “correct” and you don’t have to use it!</p>
+<section id="styling-tools" class="level4" data-number="4.1.2.1">
+<h4 data-number="4.1.2.1" class="anchored" data-anchor-id="styling-tools"><span class="header-section-number">4.1.2.1</span> Styling tools</h4>
+<p>There are (at least) two well-maintained packages that can help you enforce style guides: <a href="https://lintr.r-lib.org/">lintr</a> and <a href="https://styler.r-lib.org/">styler</a>. Both use tidyverse style by default, but are customizable to your preferred style rules.</p>
+</section>
+<section id="final-notes-on-styling" class="level4" data-number="4.1.2.2">
+<h4 data-number="4.1.2.2" class="anchored" data-anchor-id="final-notes-on-styling"><span class="header-section-number">4.1.2.2</span> Final notes on styling</h4>
+<p>While standardizing your coding style is an essential “best practice,” remember that in the end styling is usually not make-or-break for your code. Don’t get lost in the weeds. Again: <strong>The best code is the code that works.</strong> You have limited time and energy to work on your project. Before you get too deep into developing your own personalized style or rigorously checking every detail of every script you’ve ever written to retroactively enforce a style, think about whether that’s truly the most productive use of your precious time. Hopefully at some point style really can be high priority, but if that’s not where you’re at right now, that’s fine!</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/cartoons-memes/style-cartoon.png" class="img-fluid figure-img"></p>
+<figcaption>C Programming Style Guide Cartoon – “I hate programmers.”</figcaption>
+</figure>
+</div>
+<p>One final recommendation: choose where to be cautious. It’s easy to avoid special characters even if they’re technically permissible sometimes, so just avoid them. Being concise is nice, but it’s probably safer to prioritize readability over conciseness. Keep your future self in mind. What can you do now to best help future-you when you come back to this project in a year having completely forgotten everything you’re doing now?</p>
+</section>
+</section>
+</section>
+<section id="example-my-style-guide-and-practices" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="example-my-style-guide-and-practices"><span class="header-section-number">4.2</span> Example: My style guide and practices</h2>
+<p>You can view the custom style guide I (usually) follow <a href="../appendix/natalie-style-guide.qmd">here</a>. Remember this is just what I have found works well for me. It’s not “correct” and you don’t have to use it!</p>
+</section>
+<section id="intelligible" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="intelligible"><span class="header-section-number">4.3</span> Intelligible</h2>
+<section id="informative-comments" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="informative-comments"><span class="header-section-number">4.3.1</span> Informative comments</h3>
+<p>Comments are an essential but easily overlooked part of your code. If you’re a beginner coder, commenting may feel burdensome, compounded by the fact that beginner coders should practice over-commenting to an extent (and chill out a bit as they gain experience). Fight the impulse to treat commenting as busy work or an unpleasant obligation. Comments are a critical tool for making something designed to be comprehensible to a machine equally comprehensible to the humans who actually have to do the work of designing and maintaining it.</p>
+<p><img src="../images/cartoons-memes/stop-sign-comment.jpg" class="img-fluid" alt="Stop sign comments meme"> Borrowing from <a href="https://stackoverflow.blog/2021/12/23/best-practices-for-writing-code-comments/">this stackoverflow blog post</a>, here are 9 rules for effective commenting:</p>
+<ol type="1">
+<li>Comments should not duplicate the code.</li>
+<li>Good comments do not excuse unclear code.</li>
+<li>If you can’t write a clear comment, there may be a problem with the code.</li>
+<li>Explain unidiomatic code in comments.</li>
+<li>Provide links to the original source of copied code.</li>
+<li>Include links to external references where they will be most helpful.</li>
+<li>Add comments when fixing bugs.</li>
+<li>Use comments to mark incomplete implementations.</li>
+</ol>
+<p>Check out the original post for more information on what each of these rules means. The biggest picture take-aways should be that 1) comments are not optional and 2) <a href="https://blog.codinghorror.com/code-tells-you-how-comments-tell-you-why/">the code tells you how, the comments tell you why</a>.</p>
+<p>It’s also worth pointing out that if you choose to use Copilot when coding in RStudio, writing good comments is what prompts useful code suggestions that are actually in line with what you want.</p>
+<section id="commit-messages" class="level4" data-number="4.3.1.1">
+<h4 data-number="4.3.1.1" class="anchored" data-anchor-id="commit-messages"><span class="header-section-number">4.3.1.1</span> Commit messages</h4>
+<p>As you get used using github, think about your commit messages as the cousin of in-text comments. Your commit messages should be informative, clear, and concise. Your repo is a living thing (that’s the point!) and by the time you’re ready to never look at this thing ever again you’ll have committed a million changes. Your commit messages should tell that version of you exactly what the purpose of each commit was.</p>
+<p>Imagine you are starting a project 3 years from now. Future-you knows that present-you wrote exactly the code you need at the beginning of present-you’s project, but by the end of this project that code was irrelevant and so (rightfully) removed from the “final” version. Future-you looks through the messages, find “Deleted chunk that calculates ratio of giant ducks to tiny dinosaurs in a fair fight,” and is indescribably grateful to present-you for writing clear commit messages.</p>
+<p>More on commit messages in <a href="git-github.html" class="quarto-xref"><span>Chapter 5</span></a>.</p>
+</section>
+<section id="final-note-on-comments" class="level4" data-number="4.3.1.2">
+<h4 data-number="4.3.1.2" class="anchored" data-anchor-id="final-note-on-comments"><span class="header-section-number">4.3.1.2</span> Final note on comments</h4>
+<p>Personally, I don’t mind humorous comments or commit messages. I actively endorse them as a way to let things go, keep your priorities straight, vent frustration, seek some solidarity, and give future-you a chuckle. That said, not everyone appreciates overly casual commenting. Be mindful of keeping your comments professional if that’s what your context expects. (Please feel free to let your geek humor flag fly in D2M-R. I always appreciate the occasional “I have no idea why this works but for the love of god don’t change it.”)</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/cartoons-memes/good-comments-cartoon.jpeg" class="img-fluid figure-img"></p>
+<figcaption>Good comments are hard. – Geek and Poke</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="meaningful-naming" class="level3" data-number="4.3.2">
+<h3 data-number="4.3.2" class="anchored" data-anchor-id="meaningful-naming"><span class="header-section-number">4.3.2</span> Meaningful naming</h3>
+<p>For some reason every example in every programming tutorial ever will teach you how to create a variable with the name <code>my_variable</code> and a function with the name <code>my_function</code>. I get it, but these are objectively horrible names. Imagine looking through someone’s code and seeing <code>my_function(my_variable, 2)</code>. What?? That better come with like 12 lines of comments because otherwise it’s total nonsense.</p>
+<p>Of course, no one actually recommends using <code>my_whatever</code> in your actual code, but it’s the principle of the thing! Designing object, function, and file names that actually tell you any useful information can be a lot harder than it sounds, but it’s essential for the intelligibility of your code.</p>
+<blockquote class="blockquote">
+<p>“There are only two hard things in Computer Science: cache invalidation and naming things.”</p>
+<p>— Phil Karlton</p>
+</blockquote>
+<p>The big <strong>rule</strong> here (vs a guideline): Names should describe the named thing.</p>
+<p><img src="../images/cartoons-memes/variable-name-cartoon.jpg" class="img-fluid" alt="“Keep it simple, stupid – commitstrip.com"> A few guidelines for crafting meaningful names (<a href="https://dev.to/l222p/code-design-meaningful-variables-names-3enf">source</a>):</p>
+<ol type="1">
+<li><strong>Avoid disinformation.</strong> Don’t include <code>_df</code> in the name of a <code>data.table</code>, don’t name a function <code>get_number</code> if it returns a string.</li>
+<li><strong>Use pronounceable names.</strong> Whether you want to or not you’ll inevitably talk about your code out loud (even if just to a <a href="https://rubberduckdebugging.com/">rubber duck</a>). It’s a lot easier to ask someone to check for errors in your <code>child_gesture</code> table or your <code>group_SES_quartile</code> function than <code>cgtbl</code> or <code>grpsq</code>. This doesn’t mean you can’t abbreviate: <code>chi_gest</code> and <code>SES4</code> are perfectly pronounceable too (though less transparent, which is a trade-off you’ll need to consider).</li>
+<li><strong>Use searchable names.</strong> <code>x</code> is a useful variable in math, not in programming. Plan ahead for when you need to cmd+f to replace all cases of a name with a slightly different version. Examples will often use <code>p</code> to name plots, but replacing all <code>p</code>s with <code>pcgChildScatter</code> will leave you with a lot of <code>pcgChildScatterivot_longer()</code>s and <code>ungroupcgChildScatter()</code> and <code>pcgChildScattercg.child.compcgChildScatterare</code>s.</li>
+<li><strong>Pick one word/format per concept.</strong> You turned a sprawling data frame into 3 manageable intermediate data frames based on groups of related measurements. Call them <code>gesture.freqs</code>, <code>gesture.rates</code>, and <code>gesture.ratios</code> rather than <code>count.gestures</code>, <code>summ.rates.gestures</code>, and <code>grats</code>.</li>
+<li><strong>Avoid encodings.</strong> This is a little more complicated (look at the source link above for more), but the gist is that names should make sense on their own and not implicitly rely on knowing what other things in the code do. The purpose of the function <code>mean_cgfq</code> may be decipherable if you know that the dataframe <code>child.gesture</code> exists and contains a <code>frequency</code> variable, but out of context it’s a mystery.</li>
+</ol>
+</section>
+</section>
+<section id="maintainable" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="maintainable"><span class="header-section-number">4.4</span> Maintainable</h2>
+<p>Aim to create code that is future-proof and collaborator-proof (especially <em>bad</em>-collaborator-proof). It can be hard to know in the moment whether you’re writing a script you’ll never open again or one you’ll return to for years to come. Set yourself up for the latter.</p>
+<section id="documentation" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="documentation"><span class="header-section-number">4.4.1</span> Documentation</h3>
+<p>Creating documentation doesn’t usually need to be a major concern for beginner or intermediate programmers. However, you’ll be <em>depending on</em> a lot of documentation even if you’re not creating it yourself. As you start wading through the world of R packages, pay attention to the differences in documentation. Packages published to CRAN must adhere to minimum standards of documentation. Many larger packages will have their own websites or GitHub repos (in addition to CRAN) with extensive documentation, examples, and FAQs. Smaller independent and specialized packages might have extremely useful functions but leave you desperately trying to work out how to use them effectively.</p>
+<p>Any time you construct something usable – anything from a simple in-line function to a package to a shiny app – practice coherent documentation. Does your documentation look like the kind of documentation you find helpful? If you hand it off to a friend without any additional guidance can they figure out what to do with it?</p>
+<p>Think of multi-line comment chunks as a form of mini-documentation. Explain what the point of a script is at the top of a file, explain what the point of the function you’re defining is and what parameters it accepts just above the definition, etc.</p>
+</section>
+<section id="lifecycles" class="level3" data-number="4.4.2">
+<h3 data-number="4.4.2" class="anchored" data-anchor-id="lifecycles"><span class="header-section-number">4.4.2</span> Lifecycles</h3>
+<section id="function-lifecycle" class="level4" data-number="4.4.2.1">
+<h4 data-number="4.4.2.1" class="anchored" data-anchor-id="function-lifecycle"><span class="header-section-number">4.4.2.1</span> Function lifecycle</h4>
+<p>R is constantly evolving, and R functions exist in “lifecycles.”</p>
+<p>In general, you want to prioritize using functions that exist in the <em>stable</em> stage. A stable function is currently maintained, works with the most current version of R (and any dependent packages), and does not currently have a better option.</p>
+<p>Note the use of “current” in those descriptors, though. Any or all of those may change, and it’s important to keep on top of things in any code you hope to come back to in the future.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/cartoons-memes/lifecycle.png" class="img-fluid figure-img"></p>
+<figcaption>Lifecycle stages - sourced from lifecycle.r-lib.org</figcaption>
+</figure>
+</div>
+<p>R function lifecycle stages include:</p>
+<ul>
+<li><strong>Experimental.</strong> This function is in development. Like beta software or an early access video game, this function may or may not be developed into a full, stable release. It may end up replacing currently stable functions, or it may be abandoned tomorrow. Experimental functions can be very helpful for very specific use-cases where stable functions don’t yet exist or aren’t sufficient, but you should use them with caution and add a comment noting that it’s experimental in case it breaks your code when something updates.</li>
+<li><strong>Stable.</strong> This function is currently operational, up-to-date, and maintained. This is the default stage, so unless the documentation indicates otherwise you can presume a function is stable. You should prioritize functions in the stable life stage.</li>
+<li><strong>Superseded.</strong> This function is still supported and isn’t going away any time soon, but it’s not going to get any further development. It is safe to use, but there is now an alternative <em>stable</em> function that is preferred for its use. A good example here is the <code>gather</code> and <code>spread</code> functions which have been superseded by <code>pivot_longer</code> and <code>pivot_wider</code>. Gather and spread were around for a long time and are essential to a lot of operational code, and a lot of people are used to them now and don’t really want to switch over to something new; it would be impractical to not support them. But the pivot options are just, well, better. If you have a good reason to favor a superseded function, go for it. If you’re not already familiar with it though, it’s wiser to spend your time learning the newer, stable replacement.</li>
+<li><strong>Deprecated.</strong> This function works now but won’t for long. It may already not work with the current version of R, but still works with some operational older versions. Only use deprecated functions as a temporary last resort, and update with stable or experimental functions once you’re able.</li>
+</ul>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html">Learn more about lifecycles here.</a></p>
+</section>
+<section id="data-lifecycle" class="level4" data-number="4.4.2.2">
+<h4 data-number="4.4.2.2" class="anchored" data-anchor-id="data-lifecycle"><span class="header-section-number">4.4.2.2</span> Data lifecycle</h4>
+<p>Your data don’t exist in quite such a formal “lifecycle,” but you can thing about them in a similar way as you try to future-proof your code:</p>
+<ul>
+<li><strong>How much could your data change?</strong>
+<ul>
+<li>Incomplete datasets will get more data (e.g., pilot datasets -&gt; final datasets)</li>
+<li>“Complete” datasets may eliminate some data (e.g., retroactively excluding participants or measurement timepoints)</li>
+<li>Variables may need to be combined, anonymized, mutated, etc.</li>
+</ul></li>
+<li><strong>How similar are your data to other data?</strong>
+<ul>
+<li>Follow-up studies and replications usually need to make minor (and sometimes major) changes to data format/organization</li>
+<li>Problems in data collection stage that are too late to change will mean new data format when they are fixed next time</li>
+<li>Other researchers in your area who could benefit from your code might use similar data collection methods but different organization methods</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="dry-programming" class="level3" data-number="4.4.3">
+<h3 data-number="4.4.3" class="anchored" data-anchor-id="dry-programming"><span class="header-section-number">4.4.3</span> DRY programming</h3>
+<p><a href="https://www.plutora.com/blog/understanding-the-dry-dont-repeat-yourself-principle">“DRY” programming</a> stands for “Don’t Repeat Yourself.” Generally, stop copying and pasting! There are certainly merits to copy/paste when you’re making use of <em>external</em> code (e.g., from stackoverflow, chatGPT suggested code, forking a repo, your own old project), but DRY coding means minimizing repetition <em>internally</em>, within a single script or project.</p>
+<p>When you stay DRY, you:</p>
+<ul>
+<li><strong>Avoid:</strong>
+<ul>
+<li>Propagating mistakes that must be corrected individually</li>
+<li>Duplication conflicts</li>
+<li>Combing through verbose scripts for minor errors</li>
+</ul></li>
+<li><strong>Promote:</strong>
+<ul>
+<li>Replicable, reproducible code</li>
+<li>Abstracting code for multiple contexts of use</li>
+<li>Code usable by and relevant to other people and future-you</li>
+</ul></li>
+</ul>
+</section>
+<section id="abstracted-coding" class="level3" data-number="4.4.4">
+<h3 data-number="4.4.4" class="anchored" data-anchor-id="abstracted-coding"><span class="header-section-number">4.4.4</span> Abstracted coding</h3>
+<p>“Abstracting” in the sense of DRY coding usually refers to practices like defining one function to use repeatedly rather than copying and pasting the same block of code and changing variable names every time. Abstraction exists at a finer-grained level as well, such as with paths and variables. Generally, abstracted (relative) paths and variables are more durable that hard-coded (absolute) ones.</p>
+<section id="paths" class="level4" data-number="4.4.4.1">
+<h4 data-number="4.4.4.1" class="anchored" data-anchor-id="paths"><span class="header-section-number">4.4.4.1</span> Paths</h4>
+<p>Maximally abstracted file path references minimize broken links. As an example:</p>
+<ul>
+<li><span style="color:red"><code>Natalie's Work MacBook/Users/Natalie/repos/d2m-r/example-repo/images/barplot.jpg</code></span>
+<ul>
+<li>Only works on Natalie’s work computer no matter what</li>
+</ul></li>
+<li><span style="color:orange"><code>~/repos/d2m-r/example-repo/images/barplot.jpg</code></span>
+<ul>
+<li>Works on any machine if it’s cloned to this particular location</li>
+</ul></li>
+<li><span style="color:green"><code>/images/barplot.jpg</code></span>
+<ul>
+<li>Works when you clone the repo anywhere as long as the internal structure is unmodified</li>
+</ul></li>
+</ul>
+</section>
+<section id="variables" class="level4" data-number="4.4.4.2">
+<h4 data-number="4.4.4.2" class="anchored" data-anchor-id="variables"><span class="header-section-number">4.4.4.2</span> Variables</h4>
+<p>Your data will change. You want to set yourself up for making as few changes as possible to accommodate changes to your data. This is the same logic as writing your manuscript in R Markdown with in-text code and references!</p>
+<ul>
+<li><span style="color:red"><code>my_mean &lt;- (2 + 4)/2</code></span>
+<ul>
+<li>Always equals 3</li>
+</ul></li>
+<li><span style="color:orange"><code>x &lt;- 2 ; y &lt;- 4</code>or <code>x &lt;- 3</code> ; <code>y &lt;- 10the_mean &lt;- (x + y)/2</code></span>
+<ul>
+<li>Output will change to reflect changes to 2 input variables</li>
+</ul></li>
+<li><span style="color:green"><code>number_list &lt;- c(2,3)</code>or <code>number_list &lt;- 2:8</code>or <code>number_list &lt;- c(1,2,8,100)</code> ; <code>a_mean &lt;- sum(number_list)/length(number_list)</code></span>
+<ul>
+<li>Output will change no matter how many input numerals are averaged</li>
+</ul></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="contextualized" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="contextualized"><span class="header-section-number">4.5</span> Contextualized</h2>
+<section id="programming-community-rules" class="level3" data-number="4.5.1">
+<h3 data-number="4.5.1" class="anchored" data-anchor-id="programming-community-rules"><span class="header-section-number">4.5.1</span> Programming community “rules”</h3>
+<p>A lot of “best practices” will apply across the board, but many will be dependent on smaller communities. R programmers don’t share exactly the same preferences for practices as C++ or Java coders. R statisticians don’t always (or ever) agree with Stats or SPSS users. Those of us working with data within academic research will have very different ideas of effective ways of organizing or presenting data “stories” than data analysts at start-ups or working in finance.</p>
+<p>Find your communities (plural) and do your best to respect their rules. This isn’t so much about gatekeeping and in-grouping (though it can certainty feel that way). It’s more about promoting collaboration. When everyone talks about their work in a similar way – whether it’s using the same style guide, preferring certain plots for certain analyses, opting for one package or another, formatting example random data, whatever – it’s much easier to work in forked repos, respond to crowd-sourced questions, understand others’ presentations, and just generally work together toward shared intentions.</p>
+<p>Also you’ll <a href="https://www.reddit.com/r/ProgrammerHumor/">appreciate</a> the <a href="https://www.reddit.com/r/rstatsmemes/">memes</a> more.</p>
+</section>
+<section id="project-priorities" class="level3" data-number="4.5.2">
+<h3 data-number="4.5.2" class="anchored" data-anchor-id="project-priorities"><span class="header-section-number">4.5.2</span> Project priorities</h3>
+<p>Above all else (or I guess below, since this is the bottom of the section, but I said this at the top, too), <strong>the best code is the code that works.</strong> You have limited time and resources. You have needs and goals specific to your project and to you as an individual. People will refer to best practices “rules,” but they are called “best practices” for a reason. They are not hard and fast rules; they aren’t supposed to be. They are what <em>should</em> be <em>relatively</em> the most useful <em>most of the time</em>. Get in the <em>practice</em> of using these guidelines when you can, but ultimately this is not what your work is about.</p>
+<p>Keep your project’s goals as your top priorities. Consider the context of your work and accept that it’s not going to be exactly the same as any other context, and it will be vastly different from many. Make these guidelines work for you, stay flexible, and don’t worry if and when you need to just say screw this and move on with your life.</p>
+</section>
+</section>
+<section id="other" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="other"><span class="header-section-number">4.6</span> Other</h2>
+<p>If you’re getting to this chapter at the beginning of the course, you can skim this part. Most won’t immediately be relevant. But when you get to the point of writing your own manuscript in R Markdown, collaborating on GitHub, or debugging code, you can return here for more specific advice.</p>
+<section id="notebooks-quarto-and-markdown" class="level3" data-number="4.6.1">
+<h3 data-number="4.6.1" class="anchored" data-anchor-id="notebooks-quarto-and-markdown"><span class="header-section-number">4.6.1</span> Notebooks, Quarto, and Markdown</h3>
+<section id="editor" class="level4" data-number="4.6.1.1">
+<h4 data-number="4.6.1.1" class="anchored" data-anchor-id="editor"><span class="header-section-number">4.6.1.1</span> Editor</h4>
+<p>Don’t use the visual editor! Quarto documentation will tell you to. I am telling you not to. You are in my class. Don’t do it.</p>
+<p>You may have to delete/edit lines in your yaml header if you accidentally enable the visual editor.</p>
+</section>
+<section id="organization" class="level4" data-number="4.6.1.2">
+<h4 data-number="4.6.1.2" class="anchored" data-anchor-id="organization"><span class="header-section-number">4.6.1.2</span> Organization</h4>
+<p>Remember everything will run top to bottom, just like a regular .R script. Right after your YAML header, your first chunks should 1) load all libraries, 2) set document defaults (optional), 3) set a random seed (optional), and 4) source any required external scripts in a sensible order.</p>
+</section>
+<section id="code-chunks" class="level4" data-number="4.6.1.3">
+<h4 data-number="4.6.1.3" class="anchored" data-anchor-id="code-chunks"><span class="header-section-number">4.6.1.3</span> Code chunks</h4>
+<!-- The majority of this can move to an intro to quarto chapter in Q2 once that exists. -->
+<p>Code chunks should:</p>
+<ul>
+<li><strong>Do 1 and only 1 thing.</strong> A chunk should serve a single and transparent purpose. As a rule of thumb, if you can’t describe what your chunk does in 5 or fewer words, it should probably be more than one chunk. For example, one chunk might: assemble a ggplot, render a plot or table, import or export intermediate datasets, filter data for a specific purpose, print or store the output of a regression. This means you’ll sometimes need multiple chunks for things that at first feel like one big thing.
+<ul>
+<li>Example: Include a demographics table in your document
+<ul>
+<li>Chunk 1: Create an intermediate dataset with only relevant demographic variables and observations</li>
+<li>Chunk 2: Perform any alternations or calculations (e.g., summarize by gender groups, create income brackets)</li>
+<li>Chunk 3: Store a basic kable or table</li>
+<li>Chunk 4: Render the kable in the document with the aesthetic details you want</li>
+<li>By separating it into multiple chunks, you can easily refer to distinct elements. Maybe you want to create the same demo table for a different dataset. Easy! You’ll have a new Chunk 1 but 2-4 are the same. Want to call a value from the table in the text? It’s pretty messy to pull that from the “pretty” kable you rendered, but it’s simple to pull from the basic kable skeleton you built in chunk 3. Want to print a complete demo table in one place and a summarized table somewhere else? Make an alternative version of chunk 2 for the second table.</li>
+</ul></li>
+</ul></li>
+<li><strong>Have informative and unique names.</strong> Name your chunks to minimize human error. In addition to helping you stay organized, this will help tremendously with troubleshooting. Error messages during the knitting process don’t always give you the precise line number, but will always give you the chunk name where the problem occurred. (This is also a good reason to keep your chunks short and for 1 purpose only.) Aim to have the chunk name clearly indicate the one “thing” your chunk does. By default, I usually use verb-noun names: <code>read-data</code>, <code>summarize-demos</code>, <code>build-child-table</code>, <code>build-gesture-bar-plot</code>. The only exception (for me) is chunks that do the actual rendering of tables or plots, which I give a simple label matched to the chunk that built it (e.g., <code>build-gesture-stacked-bar</code> saves a plot to the variable <code>gestureStackedBar</code> which is then rendered in the chunk named <code>fig-gesture-stacked-bar</code>).
+<ul>
+<li>Critically, your chunk names should be:
+<ul>
+<li>Unique (knitr will throw an error for duplicate chunk names)</li>
+<li>Informative (<code>fig-gesture-stacked-bar</code> and not <code>bar-graph</code>)</li>
+<li>Conventional (conservative and correct)
+<ul>
+<li>e.g., R variables cannot start with a numeral, so even though chunk names legally can, it’s better to avoid it</li>
+<li>Don’t use underscores or spaces. Even if they “work” they often won’t work. Stick to <code>.</code> and <code>-</code> as separators.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><strong>Specify whether/how they should run and print.</strong> Many chunk options are available here, but at a basic level use <code>echo</code> and <code>include</code> to tell knitr to show/hide your code and/or output and use <code>eval</code> to say whether to run the code at all. You can easily change these chunk settings in RStudio by clicking the gear icon in the top right corner of any chunk.
+<ul>
+<li>Show output only: <code>echo=FALSE</code></li>
+<li>Show code and output: <code>echo=TRUE</code></li>
+<li>Show nothing (run the code without printing anything): <code>include=TRUE</code></li>
+<li>Show nothing and do not run code (just ignore the whole chunk): <code>eval=FALSE, include=FALSE</code></li>
+</ul></li>
+<li><strong>Be placed at the point they are needed or referenced.</strong> In theory, you could place every single chunk at the top of the file so long as they are in the correct order relative to each other. In practice, that’s impossible to manage. The beauty of R notebooks is the seamless integration of code and narrative, making the whole thing as human-friendly as it is machine-friendly. Keep your chunks as close as possible to the point in the narrative that they are referenced to easily edit both narrative and code as you work.</li>
+<li><strong>Be (relatively) short, sourcing longer scripts if necessary.</strong> Using <code>source()</code> will run the full code of another file. Long blocks of code or instances where the purpose of code really can’t follow the “one-chunk-one-thing” rule may call for sourcing the code as a separate script. This is especially useful for:
+<ul>
+<li>Code that you know you will rarely or never need to make dynamic edits to, like a script that imports multiple .csv files, wrangles many sources of data, and produces multiple intermediate datasets that will be the essential data for your whole manuscript.</li>
+<li>Scripts that you run often that aren’t project specific. For example, I have a generic <code>startup.R</code> script I source that loads my most commonly used libraries, sets my preferred ggplot theme tweaks, and defines color palettes.</li>
+<li>Dedicated scripts for defining all the custom functions necessary for the project. Nearly all of my projects source a <code>functions.R</code> script, which all start from a basic file that has functions I use in most projects (like one that calculates SD/SE and adds error bars to plots).</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="github-collaboration" class="level3" data-number="4.6.2">
+<h3 data-number="4.6.2" class="anchored" data-anchor-id="github-collaboration"><span class="header-section-number">4.6.2</span> GitHub &amp; Collaboration</h3>
+<ul>
+<li>Include and maintain both a .gitignore and README.md file in the top level of your repository</li>
+<li>Make purposeful and wise decisions about managing public, private, and protected data and files</li>
+<li>Use informative commit messages</li>
+<li>Pull before you start editing; commit as you work; push when you close your session</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://xkcd.com/1597/.png" class="img-fluid figure-img"></p>
+<figcaption>Git xkcd</figcaption>
+</figure>
+</div>
+<p><strong>Never forget that the whole point of using GitHub is version control! </strong></p>
+<p>Do <em>not</em> create a new file for each assignment. Your repo is the home of your research project, not a collection of notes and homework. Keep it organized, future-proof, collaborator-friendly, and <em>contextualized beyond this class</em>.</p>
+</section>
+</section>
+</section>
+<section id="debugging-troubleshooting" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Debugging &amp; Troubleshooting</h1>
+<section id="documentation-1" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="documentation-1"><span class="header-section-number">5.1</span> Documentation</h2>
+<section id="helplookup-functions" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="helplookup-functions"><span class="header-section-number">5.1.1</span> Help/lookup functions</h3>
+</section>
+<section id="function-documentation" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="function-documentation"><span class="header-section-number">5.1.2</span> Function documentation</h3>
+</section>
+<section id="package-documentation" class="level3" data-number="5.1.3">
+<h3 data-number="5.1.3" class="anchored" data-anchor-id="package-documentation"><span class="header-section-number">5.1.3</span> Package documentation</h3>
+</section>
+<section id="resources" class="level3" data-number="5.1.4">
+<h3 data-number="5.1.4" class="anchored" data-anchor-id="resources"><span class="header-section-number">5.1.4</span> Resources</h3>
+</section>
+</section>
+<section id="solving-your-own-problems" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="solving-your-own-problems"><span class="header-section-number">5.2</span> Solving your own problems</h2>
+<section id="error-messages" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="error-messages"><span class="header-section-number">5.2.1</span> Error messages</h3>
+</section>
+<section id="garbage-in-garbage-out-and-other-tropes" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="garbage-in-garbage-out-and-other-tropes"><span class="header-section-number">5.2.2</span> Garbage in, garbage out (and other tropes)</h3>
+</section>
+<section id="line-by-line-debugging" class="level3" data-number="5.2.3">
+<h3 data-number="5.2.3" class="anchored" data-anchor-id="line-by-line-debugging"><span class="header-section-number">5.2.3</span> Line-by-line debugging</h3>
+</section>
+<section id="rubber-ducking" class="level3" data-number="5.2.4">
+<h3 data-number="5.2.4" class="anchored" data-anchor-id="rubber-ducking"><span class="header-section-number">5.2.4</span> Rubber ducking</h3>
+</section>
+</section>
+<section id="ask-the-internet" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="ask-the-internet"><span class="header-section-number">5.3</span> Ask the internet</h2>
+<section id="start-strong---asking-good-questions" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="start-strong---asking-good-questions"><span class="header-section-number">5.3.1</span> Start strong - asking good questions</h3>
+</section>
+<section id="crowdsource" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="crowdsource"><span class="header-section-number">5.3.2</span> Crowdsource</h3>
+</section>
+<section id="use-ai-constructively" class="level3" data-number="5.3.3">
+<h3 data-number="5.3.3" class="anchored" data-anchor-id="use-ai-constructively"><span class="header-section-number">5.3.3</span> Use AI constructively</h3>
+</section>
+</section>
+<section id="ask-humans-for-classrooms-and-group-learning" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="ask-humans-for-classrooms-and-group-learning"><span class="header-section-number">5.4</span> Ask humans (for classrooms and group learning)</h2>
+<section id="ask-your-classmates" class="level3" data-number="5.4.1">
+<h3 data-number="5.4.1" class="anchored" data-anchor-id="ask-your-classmates"><span class="header-section-number">5.4.1</span> Ask your classmates</h3>
+</section>
+<section id="use-slack" class="level3" data-number="5.4.2">
+<h3 data-number="5.4.2" class="anchored" data-anchor-id="use-slack"><span class="header-section-number">5.4.2</span> Use Slack</h3>
+</section>
+<section id="ask-your-instructor-tas" class="level3" data-number="5.4.3">
+<h3 data-number="5.4.3" class="anchored" data-anchor-id="ask-your-instructor-tas"><span class="header-section-number">5.4.3</span> Ask your instructor &amp; TAs</h3>
+</section>
+<section id="the-d2m-r-troubleshooting-process" class="level3" data-number="5.4.4">
+<h3 data-number="5.4.4" class="anchored" data-anchor-id="the-d2m-r-troubleshooting-process"><span class="header-section-number">5.4.4</span> The D2M-R troubleshooting process</h3>
+</section>
+</section>
+<section id="starting-from-nothing" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="starting-from-nothing"><span class="header-section-number">5.5</span> Starting from “Nothing”</h2>
+</section>
+<section id="exercises" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="exercises"><span class="header-section-number">5.6</span> Exercise(s?)</h2>
+<!-- Create a markdown document that looks matches a screenshot. I haven't explained anything about markdown. -->
+<!-- Start a debugging journal (submit for part of the engagement grade at the end of the quarter?) -->
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/intro.html" class="pagination-link" aria-label="Introduction to D2M-R - TEST EDIT 2">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to D2M-R - TEST EDIT 2</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/rstudio.html" class="pagination-link" aria-label="RStudio Essentials">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">RStudio Essentials</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

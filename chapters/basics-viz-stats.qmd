@@ -1,0 +1,44 @@
+---
+title: "Basic Visualization & Summary Statistics"
+---
+
+# Chapter overview
+
+This chapter is not the ggplot2 chapter or a deep stats chapter. It's a connection between 
+the two quarters of the class.
+
+# Putting things together
+
+## how data manipulation in the tidyverse leads to easier visualization
+
+## how visualization leads to better understanding of your data
+
+## how visualization and summary statistics fit together
+
+# Distributions of continuous variables
+
+## Histograms
+
+## Box plots
+
+## Summary statistics: mean, median, variance, standard deviation
+
+# Comparing groups
+
+## Bar plots
+
+## Summary statistics: grouped means, medians, etc.
+
+## t-tests
+
+## More advanced for later: ANOVA, chi-squared tests
+
+# Relationships between continuous variables
+
+## Scatter plots and smoothing lines
+
+## Correlation
+
+## Basic linear regression
+
+## More advanced for later: Multiple regression, logistic regression
